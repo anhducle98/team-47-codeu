@@ -31,6 +31,9 @@ function addLoginOrLogoutLinkToNavigation() {
       })
       .then((loginStatus) => {
         if (loginStatus.isLoggedIn) {
+          navigationElement.appendChild(
+              createListItem(createLink('/feed.html', 'Public Feed')));
+
           navigationElement.appendChild(createListItem(createLink(
               '/user-page.html?user=' + loginStatus.username, 'Your Page')));
 
