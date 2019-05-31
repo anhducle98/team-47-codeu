@@ -43,6 +43,9 @@ public class Datastore {
     datastore.put(messageEntity);
   }
 
+  /**
+   * Do a query of messages on datastore
+   */
   private List<Message> queryMessages(Query query) {
     List messages = new ArrayList<>();
     PreparedQuery results = datastore.prepare(query);
