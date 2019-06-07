@@ -1,45 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Chart</title>
+<head>
+  <meta charset="UTF-8" />
+  <title>Chart</title>
 
-    <script
-      type="text/javascript"
-      src="https://www.gstatic.com/charts/loader.js"
-    ></script>
-    <script type="text/javascript">
-      google.charts.load("current", { packages: ["corechart"] });
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var bookData = new google.visualization.DataTable();
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    const drawChart = async () => {
+      const bookData = new google.visualization.DataTable();
+      bookData.addColumn("string", "Book Title");
+      bookData.addColumn("number", "Votes");
 
-        bookData.addColumn("string", "Book Title");
-        bookData.addColumn("number", "Votes");
+      try {
+        const bookList = await fetch("/bookchart").then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw response;
+        });
+        bookData.addRows(bookList.map(({ title, rating }) => [title, rating]));
 
-        bookData.addRows([
-          ["The Best We Could Do", 6],
-          ["Sing, Unburied, Sing", 10],
-          ["The Book of Unknown Americans", 7],
-          ["The 57 Bus", 4],
-          ["The Handmaid's Tale", 8]
-        ]);
-
-        var chart = new google.visualization.BarChart(
-          document.getElementById("book_chart")
-        );
-        chart.draw(bookData, {
+        const node = document.getElementById("book_chart");
+        new google.visualization.BarChart(node).draw(bookData, {
           width: 800,
           height: 400,
           title: "Books' Rating"
         });
+      } catch (err) {
+        console.log(err);
       }
-    </script>
-  </head>
-  <body onload="drawChart();">
-    <h1>Chart</h1>
-    <div id="book_chart"></div>
+    };
 
-    <!-- <script type="text/javascript" src="/js/community.js"></script> -->
-  </body>
-</html>
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+  </script>
+</head>
+<body>
+  <h1>Chart</h1>
+  <div id="book_chart"></div>
+</body>
