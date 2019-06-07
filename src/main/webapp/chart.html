@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chart</title>
+
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script type="text/javascript">
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var bookData = new google.visualization.DataTable();
+
+        bookData.addColumn("string", "Book Title");
+        bookData.addColumn("number", "Votes");
+
+        bookData.addRows([
+          ["The Best We Could Do", 6],
+          ["Sing, Unburied, Sing", 10],
+          ["The Book of Unknown Americans", 7],
+          ["The 57 Bus", 4],
+          ["The Handmaid's Tale", 8]
+        ]);
+
+        var chart = new google.visualization.BarChart(
+          document.getElementById("book_chart")
+        );
+        chart.draw(bookData, {
+          width: 800,
+          height: 400,
+          title: "Books' Rating"
+        });
+      }
+    </script>
+  </head>
+  <body onload="drawChart();">
+    <h1>Chart</h1>
+    <div id="book_chart"></div>
+
+    <!-- <script type="text/javascript" src="/js/community.js"></script> -->
+  </body>
+</html>
