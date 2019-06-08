@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Chart</title>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    const drawChart = async () => {
+      const bookData = new google.visualization.DataTable();
+      bookData.addColumn("string", "Book Title");
+      bookData.addColumn("number", "Votes");
+
+      try {
+        const bookList = await fetch("/bookchart").then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw response;
+        });
+        bookData.addRows(bookList.map(({ title, rating }) => [title, rating]));
+
+        const node = document.getElementById("book_chart");
+        new google.visualization.BarChart(node).draw(bookData, {
+          width: 800,
+          height: 400,
+          title: "Books' Rating"
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+  </script>
+</head>
+<body>
+  <h1>Chart</h1>
+  <div id="book_chart"></div>
+</body>
