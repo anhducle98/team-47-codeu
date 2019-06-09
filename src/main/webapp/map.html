@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Maps</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB93QPT7R9sVl24lY6JWEr6oYBfWFm-ke4"></script>
+  <script>
+    function createMap(){
+      const map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 21.0055546, lng: 105.8434628},
+        zoom: 15
+      });
+      var marker = new google.maps.Marker({
+        position: {lat: 21.0055546, lng: 105.8434628},
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: "HUST"
+      });
+      marker.addListener("click", function() {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null)
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+      });
+    }
+
+  </script>
+  <style>
+    #map{
+      width: 500px;
+      height: 500px;
+      border: thin solid black;
+    }
+  </style>
+</head>
+<body onload="createMap();">
+  <h1>Google Maps</h1>
+  <p>This is my beloved university!</p>
+  <div id="map"></div>
+</body>
+</html>
