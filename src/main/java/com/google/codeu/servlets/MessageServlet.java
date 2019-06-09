@@ -42,6 +42,12 @@ public class MessageServlet extends HttpServlet {
     datastore = new Datastore();
   }
 
+  String replaceImage(String source) {
+    String regex = "(?:\\[(.+)\\])?(https?:([/|.|\\w|\\s|\\-|%])*\\.(?:jpg|gif|png))";
+    String replacement = "<img src=\"$2\" title=\"$1\"/>";
+    return source.replaceAll(regex, replacement);
+  }
+
   /**
    * Responds with a JSON representation of {@link Message} data for a specific user. Responds with
    * an empty array if the user is not provided.
@@ -60,6 +66,11 @@ public class MessageServlet extends HttpServlet {
     }
 
     List<Message> messages = datastore.getMessages(user);
+
+    for (Message message : messages) {
+      message.setText(replaceImage(message.getText()));
+    }
+
     Gson gson = new Gson();
     String json = gson.toJson(messages);
 
