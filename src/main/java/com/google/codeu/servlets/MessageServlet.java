@@ -43,7 +43,7 @@ public class MessageServlet extends HttpServlet {
   }
 
   String replaceImage(String source) {
-    String regex = "(?:\\[(.+)\\])?(https?:([/|.|\\w|\\s|-|%])*\\.(?:jpg|gif|png))";
+    String regex = "(?:\\[(.+)\\])?(https?:([/|.|\\w|\\s|\\-|%])*\\.(?:jpg|gif|png))";
     String replacement = "<img src=\"$2\" title=\"$1\"/>";
     return source.replaceAll(regex, replacement);
   }
