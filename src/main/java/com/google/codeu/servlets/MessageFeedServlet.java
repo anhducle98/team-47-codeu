@@ -24,6 +24,10 @@ public class MessageFeedServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json");
     List<Message> messages = datastore.getAllMessages();
+    for (Message message : messages) {
+      message.replaceImage();
+    }
+
     Gson gson = new Gson();
     String json = gson.toJson(messages);
     response.getOutputStream().println(json);
