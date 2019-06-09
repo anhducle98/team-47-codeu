@@ -60,4 +60,10 @@ public class Message {
   public long getTimestamp() {
     return timestamp;
   }
+
+  public void replaceImage() {
+    String regex = "(?:\\[(.+)\\])?(https?:([/|\\.|\\w|\\s|\\-|%])*\\.(?:jpg|gif|png))";
+    String replacement = "<img src=\"$2\" title=\"$1\"/>";
+    text = text.replaceAll(regex, replacement);
+  }
 }
