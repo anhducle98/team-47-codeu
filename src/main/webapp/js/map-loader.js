@@ -1,4 +1,5 @@
 function createMap (){
+  var markers = new Array();
   fetch('/map').then((response) => {
     return response.json();
   }).then((earthquakes) => {
@@ -8,10 +9,14 @@ function createMap (){
     });
 
     earthquakes.forEach((earthquake) => {
-      new google.maps.Marker({
+      var marker = new google.maps.Marker({
         position: {lat: earthquake.lat, lng: earthquake.lng},
         map: map
-      });
+      })
+      markers.push(marker);
     });
+
+    var markerCluster = new MarkerClusterer(map, markers,
+      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
   })
 }
