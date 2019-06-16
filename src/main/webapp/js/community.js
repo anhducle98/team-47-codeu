@@ -3,7 +3,7 @@ function buildList(userList) {
     .map((user) => {
       return `
         <li>
-          <a href="/user-page.html?user=${user}">${user}</a>
+          <a href="/user-page.jsp?user=${user}">${user}</a>
         </li>
       `;
     })

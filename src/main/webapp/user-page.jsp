@@ -14,6 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
+<% BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+   String uploadUrl = blobstoreService.createUploadUrl("/messages"); %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -32,11 +37,14 @@ limitations under the License.
     </nav>
     <h1 id="page-title">User Page</h1>
 
-    <form id="message-form" action="/messages" method="POST" class="hidden">
+    <form method="POST" enctype="multipart/form-data" action="<%= uploadUrl %>">
       Enter a new message:
       <br/>
       <textarea name="text" id="message-input"></textarea>
       <br/>
+      <p>Upload an image:</p>
+      <input type="file" name="image">
+      <br/><br/>
       <input type="submit" value="Submit">
     </form>
     <hr/>
