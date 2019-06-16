@@ -18,6 +18,9 @@ package com.google.codeu.servlets;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.blobstore.*;
+import com.google.appengine.api.images.*;
+
 import com.google.codeu.data.Datastore;
 import com.google.codeu.data.Message;
 import com.google.gson.Gson;
@@ -30,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /** Handles fetching and saving {@link Message} instances. */
 @WebServlet("/messages")
@@ -63,6 +67,7 @@ public class MessageServlet extends HttpServlet {
 
     for (Message message : messages) {
       message.replaceImage();
+      message.appendImage();
     }
 
     Gson gson = new Gson();
@@ -74,7 +79,6 @@ public class MessageServlet extends HttpServlet {
   /** Stores a new {@link Message}. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     UserService userService = UserServiceFactory.getUserService();
     if (!userService.isUserLoggedIn()) {
       response.sendRedirect("/index.html");
@@ -83,10 +87,39 @@ public class MessageServlet extends HttpServlet {
 
     String user = userService.getCurrentUser().getEmail();
     String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
+    BlobKey imageBlobKey = getUploadedImageBlobKey(request);
 
-    Message message = new Message(user, text);
+    Message message = new Message(user, text, imageBlobKey);
     datastore.storeMessage(message);
 
-    response.sendRedirect("/user-page.html?user=" + user);
+    response.sendRedirect("/user-page.jsp?user=" + user);
+  }
+
+  private BlobKey getUploadedImageBlobKey(HttpServletRequest request){
+    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
+    List<BlobKey> blobKeys = blobs.get("image");
+
+    // User submitted form without selecting a file, so we can't get a URL. (devserver)
+    if(blobKeys == null || blobKeys.isEmpty()) {
+      return null;
+    }
+
+    // Our form only contains a single file input, so get the first index.
+    BlobKey blobKey = blobKeys.get(0);
+
+    // User submitted form without selecting a file, so we can't get a URL. (live server)
+    BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
+    if (blobInfo.getSize() == 0) {
+      blobstoreService.delete(blobKey);
+      return null;
+    }
+
+    // We could check the validity of the file here, e.g. to make sure it's an image file
+    if (!blobInfo.getContentType().startsWith("image")) {
+      return null;
+    }
+
+    return blobKey;
   }
 }

@@ -18,6 +18,9 @@ package com.google.codeu.data;
 
 import java.util.UUID;
 
+import com.google.appengine.api.images.*;
+import com.google.appengine.api.blobstore.*;
+
 /** A single message posted by a user. */
 public class Message {
 
@@ -25,20 +28,22 @@ public class Message {
   private String user;
   private String text;
   private long timestamp;
+  private BlobKey imageBlobKey;
 
   /**
    * Constructs a new {@link Message} posted by {@code user} with {@code text} content. Generates a
    * random ID and uses the current system time for the creation time.
    */
-  public Message(String user, String text) {
-    this(UUID.randomUUID(), user, text, System.currentTimeMillis());
+  public Message(String user, String text, BlobKey imageBlobKey) {
+    this(UUID.randomUUID(), user, text, System.currentTimeMillis(), imageBlobKey);
   }
 
-  public Message(UUID id, String user, String text, long timestamp) {
+  public Message(UUID id, String user, String text, long timestamp, BlobKey imageBlobKey) {
     this.id = id;
     this.user = user;
     this.text = text;
     this.timestamp = timestamp;
+    this.imageBlobKey = imageBlobKey;
   }
 
   public UUID getId() {
@@ -61,9 +66,26 @@ public class Message {
     return timestamp;
   }
 
+  public BlobKey getImageBlobKey() {
+    return imageBlobKey;
+  }
+
   public void replaceImage() {
     String regex = "(?:\\[(.+)\\])?(https?:([/|\\.|\\w|\\s|\\-|%])*\\.(?:jpg|gif|png))";
     String replacement = "<img src=\"$2\" title=\"$1\"/>";
     text = text.replaceAll(regex, replacement);
+  }
+
+  public static String getImageUrlFromBlobKey(BlobKey blobKey) {
+    // Use ImagesService to get a URL that points to the uploaded file.
+    ImagesService imagesService = ImagesServiceFactory.getImagesService();
+    ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
+    return imagesService.getServingUrl(options);
+  }
+
+  public void appendImage() {
+    if (imageBlobKey != null) {
+      text += "<img src=\"" + getImageUrlFromBlobKey(imageBlobKey) + "\"/>";
+    }
   }
 }

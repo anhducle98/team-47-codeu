@@ -26,6 +26,7 @@ public class MessageFeedServlet extends HttpServlet {
     List<Message> messages = datastore.getAllMessages();
     for (Message message : messages) {
       message.replaceImage();
+      message.appendImage();
     }
 
     Gson gson = new Gson();

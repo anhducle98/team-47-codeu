@@ -34,7 +34,7 @@ function addLoginOrLogoutLinkToNavigation() {
         navigationElement.appendChild(createNav("/community.html", "Community Page"));
         navigationElement.appendChild(createNav("/feed.html", "Public Feed"));
         navigationElement.appendChild(
-          createNav("/user-page.html?user=" + loginStatus.username, "Your Page")
+          createNav("/user-page.jsp?user=" + loginStatus.username, "Your Page")
         );
         navigationElement.appendChild(createNav("/logout", "Logout"));
       } else {

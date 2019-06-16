@@ -17,6 +17,8 @@
 package com.google.codeu.data;
 
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.blobstore.*;
+import com.google.appengine.api.images.*;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
@@ -37,6 +39,7 @@ public class Datastore {
     messageEntity.setProperty("user", message.getUser());
     messageEntity.setProperty("text", message.getText());
     messageEntity.setProperty("timestamp", message.getTimestamp());
+    messageEntity.setProperty("imageBlobKey", message.getImageBlobKey());
 
     datastore.put(messageEntity);
   }
@@ -63,8 +66,9 @@ public class Datastore {
         String user = (String) entity.getProperty("user");
         String text = (String) entity.getProperty("text");
         long timestamp = (long) entity.getProperty("timestamp");
+        BlobKey imageBlobKey = (BlobKey) entity.getProperty("imageBlobKey");
 
-        Message message = new Message(id, user, text, timestamp);
+        Message message = new Message(id, user, text, timestamp, imageBlobKey);
         messages.add(message);
       } catch (Exception e) {
         System.err.println("Error reading message.");
