@@ -21,6 +21,8 @@ import com.google.appengine.api.blobstore.*;
 import com.google.appengine.api.images.*;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.cloud.vision.v1.EntityAnnotation;
+
 
 import java.util.*;
 
@@ -40,7 +42,7 @@ public class Datastore {
     messageEntity.setProperty("text", message.getText());
     messageEntity.setProperty("timestamp", message.getTimestamp());
     messageEntity.setProperty("imageBlobKey", message.getImageBlobKey());
-
+    messageEntity.setProperty("imageLabels", message.getImageLabels());
     datastore.put(messageEntity);
   }
 
@@ -67,8 +69,9 @@ public class Datastore {
         String text = (String) entity.getProperty("text");
         long timestamp = (long) entity.getProperty("timestamp");
         BlobKey imageBlobKey = (BlobKey) entity.getProperty("imageBlobKey");
+        String imageLabels = (String) entity.getProperty("imageLabels");
 
-        Message message = new Message(id, user, text, timestamp, imageBlobKey);
+        Message message = new Message(id, user, text, timestamp, imageBlobKey, imageLabels);
         messages.add(message);
       } catch (Exception e) {
         System.err.println("Error reading message.");
