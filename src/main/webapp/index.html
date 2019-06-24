@@ -15,33 +15,111 @@ limitations under the License.
 -->
 
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>CodeU 2019 Starter Project</title>
-    <link rel="stylesheet" href="/css/main.css" />
-    <script src="/js/navigation-loader.js"></script>
-  </head>
-  <body onload="addLoginOrLogoutLinkToNavigation();">
-    <nav>
-      <ul id="navigation">
-        <li><a href="/">Home</a></li>
-        <li><a href="/aboutus.html">About Our Team</a></li>
-        <li><a href="/stats.html">Stats Page</a></li>
-        <li><a href="/chart.html">Bookchart</a></li>
-        <li><a href="/map.html">Maps</a></li>
-      </ul>
-    </nav>
-    <h1>CodeU Starter Project</h1>
-    <p>
-      This is the CodeU starter project. Click the links above to login and visit your
-      page. You can post messages on your page, and you can visit other user pages if you
-      have their URL.
-    </p>
-    <p>
-      This is your code now! Feel free to make changes, and don't be afraid to get
-      creative! You could start by modifying this page to tell the world more about your
-      team.
-    </p>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8" />
+  <title>CodeU 2019 Starter Project</title>
+  <link rel="stylesheet" href="/css/main.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
+  <script src="/js/navigation-loader.js"></script>
+</head>
+<body onload="addLoginOrLogoutLinkToNavigation();">
+  <nav class="navbar">
+    <div>
+      <div class="navbar-item active">
+        <a href="/">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/aboutus.html">
+          <i class="fas fa-users"></i>
+          About
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/stats.html">
+          <i class="fas fa-chart-line"></i>
+          Stats
+        </a>
+      </div>
+    </div>
+    <div class="navbar-item login">
+      <a href="/login">
+        <i class="fas fa-sign-in-alt"></i>
+        Sign in
+      </a>
+    </div>
+  </nav>
+  <button class="create-post-btn fixed">
+    <i class="fas fa-signature"></i>
+    Post
+  </button>
+  <section class="content">
+    <div class="public-feed">
+      <div class="public-feed__header">
+        <h1>
+          Home
+        </h1>
+        <button class="create-post-btn">
+          <i class="fas fa-signature"></i>
+          Post
+        </button>
+      </div>
+      <div class="post">
+        <div class="post-header">
+          <h2 class="post-uploader">ale@codeustudents.com</h2>
+          <span class="dot">·</span>
+          <h3 class="post-date">Jun 14 2019</h3>
+        </div>
+        <div class="post-content">
+          This is our world! This is our world! This is our world! This is our world! This
+          is our world! This is our world!
+          <img src="https://media3.giphy.com/media/WlBUAWG03Zic8/giphy.gif" />
+        </div>
+        <div class="post-tags">
+          <div class="post-tag">#girl</div>
+          <div class="post-tag">#boy</div>
+          <div class="post-tag">#human</div>
+        </div>
+      </div>
+      <div class="post">
+        <div class="post-header">
+          <h2 class="post-uploader">ale@codeustudents.com</h2>
+          <span class="dot">·</span>
+          <h3 class="post-date">Jun 14 2019</h3>
+        </div>
+        <div class="post-content">
+          This is our world! This is our world! This is our world! This is our world! This
+          is our world! This is our world!
+          <img src="https://media3.giphy.com/media/WlBUAWG03Zic8/giphy.gif" />
+        </div>
+        <div class="post-tags">
+          <div class="post-tag">#girl</div>
+          <div class="post-tag">#boy</div>
+          <div class="post-tag">#human</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <h1>Applications</h1>
+      <div class="application">
+        <div class="application-info">
+          <img src="/img/bookchart.svg" />
+          Bookchart
+        </div>
+        <button class="application-action">Start</button>
+      </div>
+      <div class="application">
+        <div class="application-info">
+          <img src="/img/maps.svg" />
+          Maps
+        </div>
+        <button class="application-action">Start</button>
+      </div>
+    </div>
+  </section>
+</body>
