@@ -88,8 +88,12 @@ body {
   margin-right: 2rem;
 }
 
-.sidebar {
+.sidebar-card {
   background-color: #fff;
+}
+
+.sidebar-card + .sidebar-card {
+  margin-top: 1rem;
 }
 
 .public-feed h1 {
@@ -160,7 +164,8 @@ body {
   cursor: pointer;
 }
 
-.application {
+.application,
+.person {
   background-color: #fff;
   border-top: 1px solid rgb(230, 236, 240);
   padding: 1rem;
@@ -171,7 +176,8 @@ body {
   cursor: pointer;
 }
 
-.application:hover {
+.application:hover,
+.person:hover {
   background-color: rgba(170, 184, 194, 0.1);
 }
 
@@ -246,4 +252,19 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-right: 1rem;
+}
+
+.person-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+  margin: 0;
+}
+
+.person-email {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: normal;
+  line-height: 2rem;
+  color: rgb(101, 119, 134);
 }

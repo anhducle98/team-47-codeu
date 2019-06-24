@@ -19,17 +19,11 @@
  * already logged in.
  */
 function addLoginOrLogoutLinkToNavigation() {
-  const navigationElement = document.getElementById("navigation");
-  if (!navigationElement) {
-    console.warn("Navigation element not found!");
-    return;
-  }
-
+  const navigationElement = document.getElementsByClassName("navbar")[0];
   fetch("/login-status")
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((loginStatus) => {
+      return;
       if (loginStatus.isLoggedIn) {
         navigationElement.appendChild(createNav("/community.html", "Community Page"));
         navigationElement.appendChild(createNav("/feed.html", "Public Feed"));
