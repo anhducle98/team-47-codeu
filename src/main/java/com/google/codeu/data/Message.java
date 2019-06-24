@@ -116,7 +116,7 @@ public class Message {
   }
 
   private void appendImageLabels() {
-    if (imageLabels != "") {
+    if (imageLabels != null && imageLabels != "") {
       text += "<p>Suggested tags: " + imageLabels + "</p>";
     }
   }

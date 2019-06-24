@@ -37,7 +37,7 @@ limitations under the License.
     </nav>
     <h1 id="page-title">User Page</h1>
 
-    <form method="POST" enctype="multipart/form-data" action="<%= uploadUrl %>">
+    <form id="message-form" method="POST" enctype="multipart/form-data" action="<%= uploadUrl %>" class="hidden">
       Enter a new message:
       <br/>
       <textarea name="text" id="message-input"></textarea>
