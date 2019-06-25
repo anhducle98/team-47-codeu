@@ -10,7 +10,7 @@
   <script src="/js/navigation-loader.js"></script>
   <script src="/js/stats-loader.js"></script>
 </head>
-<body onload="buildUI()">
+<body onload="buildUI(); fetchLoginStatus();">
   <nav class="navbar">
     <div>
       <div class="navbar-item">
@@ -32,12 +32,7 @@
         </a>
       </div>
     </div>
-    <div class="navbar-item login">
-      <a href="/login">
-        <i class="fas fa-sign-in-alt"></i>
-        Sign in
-      </a>
-    </div>
+    <div class="navbar__login"></div>
   </nav>
   <button class="create-post-btn fixed">
     <i class="fas fa-signature"></i>

@@ -86,7 +86,10 @@ body {
 
 .public-feed {
   background-color: #fff;
-  margin-right: 2rem;
+}
+
+.sidebar {
+  margin-left: 2rem;
 }
 
 .sidebar-card {
@@ -213,6 +216,10 @@ body {
   background-color: rgba(29, 161, 242, 0.2);
 }
 
+body.logged-in .create-post-btn {
+  display: block;
+}
+
 .create-post-btn {
   background-color: rgb(29, 161, 242);
   border: none;
@@ -221,11 +228,17 @@ body {
     rgba(101, 119, 134, 0.25) 0px 1px 3px 1px;
   color: #fff;
   cursor: pointer;
+  display: none;
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 2rem;
   padding: 0.8rem 1.6rem;
   transition: background-color 0.15s ease-in-out;
+}
+
+.create-post-btn a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .create-post-btn i {
