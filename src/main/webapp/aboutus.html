@@ -15,37 +15,122 @@ limitations under the License.
 -->
 
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>About Us</title>
-    <link rel="stylesheet" href="/css/main.css">
-  </head>
-  </head>
-    <nav>
-      <ul id="navigation">
-        <li><a href="/">Home</a></li>
-        <li><a href="/aboutus.html">About Our Team</a></li>
-      </ul>
-    </nav>
-    <h1>About Our Team</h1>
-    <h2>Anh Duc Le</h2>
-    <ul>
-      <li>Summer Feelz: awesome, promising & HOT!</li>
-      <li>Aspirational Hobby: Skiing </li>
-      <li>Ask me About: Badminton</li>
-    </ul>
-    <h2>Quang Minh Le</h2>
-    <ul>
-      <li>Summer Feelz: free, active and hot as hell </li>
-      <li>Aspirational Hobby: parachuting </li>
-      <li>Ask me About: One Piece </li>
-    </ul>
-    <h2>Lam Nguyen Hy Hoai</h2>
-    <ul>
-      <li>Summer Feelz: hot, insufferable; I hate it.</li>
-      <li>Aspirational Hobby: being able to play the drum part of The Violation (Fleshgod Apocalypse)</li>
-      <li>Ask me About: memes.</li>
-    </ul>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8" />
+  <title>About Us</title>
+  <link rel="stylesheet" href="/css/main.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
+  <script src="/js/moment.js"></script>
+  <script src="/js/navigation-loader.js"></script>
+</head>
+<body onload="onBodyLoaded();">
+  <nav class="navbar">
+    <div>
+      <div class="navbar-item active">
+        <a href="/">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/aboutus.html">
+          <i class="fas fa-users"></i>
+          About
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/stats.html">
+          <i class="fas fa-chart-line"></i>
+          Stats
+        </a>
+      </div>
+    </div>
+    <div class="navbar-item login">
+      <a href="/login">
+        <i class="fas fa-sign-in-alt"></i>
+        Sign in
+      </a>
+    </div>
+  </nav>
+  <button class="create-post-btn fixed">
+    <i class="fas fa-signature"></i>
+    Post
+  </button>
+  <section class="content">
+    <div class="public-feed">
+      <div class="public-feed__header">
+        <h1>
+          About Our Team
+        </h1>
+      </div>
+      <div class="post">
+        <div class="post-header">
+          <h2 class="post-uploader">Anh Duc Le</h2>
+        </div>
+        <div class="post-content">
+          <ul>
+            <li>Summer Feelz: awesome, promising & HOT!</li>
+            <li>Aspirational Hobby: Skiing</li>
+            <li>Ask me About: Badminton</li>
+          </ul>
+        </div>
+      </div>
+      <div class="post">
+        <div class="post-header">
+          <h2 class="post-uploader">Quang Minh Le</h2>
+        </div>
+        <div class="post-content">
+          <ul>
+            <li>Summer Feelz: free, active and hot as hell</li>
+            <li>Aspirational Hobby: parachuting</li>
+            <li>Ask me About: One Piece</li>
+          </ul>
+        </div>
+      </div>
+      <div class="post">
+        <div class="post-header">
+          <h2 class="post-uploader">Lam Nguyen Hy Hoai</h2>
+        </div>
+        <div class="post-content">
+          <ul>
+            <li>Summer Feelz: hot, insufferable; I hate it.</li>
+            <li>
+              Aspirational Hobby: being able to play the drum part of The Violation
+              (Fleshgod Apocalypse)
+            </li>
+            <li>Ask me About: memes.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <h1>Applications</h1>
+        <div class="application">
+          <div class="application-info">
+            <img src="/img/bookchart.svg" />
+            Bookchart
+          </div>
+          <a href="/chart.html">
+            <button class="application-action">Start</button>
+          </a>
+        </div>
+        <div class="application">
+          <div class="application-info">
+            <img src="/img/maps.svg" />
+            Maps
+          </div>
+          <a href="/map.html">
+            <button class="application-action">Start</button>
+          </a>
+        </div>
+      </div>
+      <div class="sidebar-card community">
+        <h1>Community</h1>
+      </div>
+    </div>
+  </section>
+</body>

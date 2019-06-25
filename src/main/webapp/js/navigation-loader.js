@@ -1,66 +1,40 @@
-/*
- * Copyright 2019 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
- * Adds a login or logout link to the page, depending on whether the user is
- * already logged in.
- */
-function addLoginOrLogoutLinkToNavigation() {
-  const navigationElement = document.getElementsByClassName("navbar")[0];
-  fetch("/login-status")
-    .then((response) => response.json())
-    .then((loginStatus) => {
-      return;
-      if (loginStatus.isLoggedIn) {
-        navigationElement.appendChild(createNav("/community.html", "Community Page"));
-        navigationElement.appendChild(createNav("/feed.html", "Public Feed"));
-        navigationElement.appendChild(
-          createNav("/user-page.jsp?user=" + loginStatus.username, "Your Page")
-        );
-        navigationElement.appendChild(createNav("/logout", "Logout"));
-      } else {
-        navigationElement.appendChild(createListItem(createLink("/login", "Login")));
-      }
+function fetchPublicFeed() {
+  fetch("/feed")
+    .then((res) => res.json())
+    .then((messageList) => {
+      const feed = document.getElementsByClassName("public-feed")[0];
+      messageList.forEach((message) => {
+        feed.innerHTML += `<div class="post">
+          <div class="post-header">
+            <h2 class="post-uploader">${message.user}</h2>
+            <span class="dot">·</span>
+            <h3 class="post-date">${moment(message.timestamp).toNow()}</h3>
+          </div>
+          <div class="post-content">
+            ${message.text}
+          </div>            
+        </div>`;
+      });
     });
 }
 
-function createNav(link, label) {
-  return createListItem(createLink(link, label));
+function fetchCommunity() {
+  fetch("/user-list")
+    .then((res) => res.json())
+    .then((userList) => {
+      const communityCard = document.querySelectorAll(".sidebar-card.community")[0];
+      userList.forEach((user) => {
+        communityCard.innerHTML += `<div class="person">
+          <div class="person-info">
+            <p class="person-name">${user}</p>
+          </div>
+          <button class="application-action">View</button>
+        </div>`;
+      });
+    });
 }
 
-/**
- * Creates an li element.
- * @param {Element} childElement
- * @return {Element} li element
- */
-function createListItem(childElement) {
-  const listItemElement = document.createElement("li");
-  listItemElement.appendChild(childElement);
-  return listItemElement;
-}
-
-/**
- * Creates an anchor element.
- * @param {string} url
- * @param {string} text
- * @return {Element} Anchor element
- */
-function createLink(url, text) {
-  const linkElement = document.createElement("a");
-  linkElement.appendChild(document.createTextNode(text));
-  linkElement.href = url;
-  return linkElement;
+function onBodyLoaded() {
+  fetchPublicFeed();
+  fetchCommunity();
 }

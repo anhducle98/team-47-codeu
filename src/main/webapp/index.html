@@ -23,9 +23,10 @@ limitations under the License.
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
   />
+  <script src="/js/moment.js"></script>
   <script src="/js/navigation-loader.js"></script>
 </head>
-<body onload="addLoginOrLogoutLinkToNavigation();">
+<body onload="onBodyLoaded();">
   <nav class="navbar">
     <div>
       <div class="navbar-item active">
@@ -69,40 +70,6 @@ limitations under the License.
           Post
         </button>
       </div>
-      <div class="post">
-        <div class="post-header">
-          <h2 class="post-uploader">ale@codeustudents.com</h2>
-          <span class="dot">·</span>
-          <h3 class="post-date">Jun 14 2019</h3>
-        </div>
-        <div class="post-content">
-          This is our world! This is our world! This is our world! This is our world! This
-          is our world! This is our world!
-          <img src="https://media3.giphy.com/media/WlBUAWG03Zic8/giphy.gif" />
-        </div>
-        <div class="post-tags">
-          <div class="post-tag">#girl</div>
-          <div class="post-tag">#boy</div>
-          <div class="post-tag">#human</div>
-        </div>
-      </div>
-      <div class="post">
-        <div class="post-header">
-          <h2 class="post-uploader">ale@codeustudents.com</h2>
-          <span class="dot">·</span>
-          <h3 class="post-date">Jun 14 2019</h3>
-        </div>
-        <div class="post-content">
-          This is our world! This is our world! This is our world! This is our world! This
-          is our world! This is our world!
-          <img src="https://media3.giphy.com/media/WlBUAWG03Zic8/giphy.gif" />
-        </div>
-        <div class="post-tags">
-          <div class="post-tag">#girl</div>
-          <div class="post-tag">#boy</div>
-          <div class="post-tag">#human</div>
-        </div>
-      </div>
     </div>
     <div class="sidebar">
       <div class="sidebar-card">
@@ -112,32 +79,22 @@ limitations under the License.
             <img src="/img/bookchart.svg" />
             Bookchart
           </div>
-          <button class="application-action">Start</button>
+          <a href="/chart.html">
+            <button class="application-action">Start</button>
+          </a>
         </div>
         <div class="application">
           <div class="application-info">
             <img src="/img/maps.svg" />
             Maps
           </div>
-          <button class="application-action">Start</button>
+          <a href="/map.html">
+            <button class="application-action">Start</button>
+          </a>
         </div>
       </div>
-      <div class="sidebar-card">
+      <div class="sidebar-card community">
         <h1>Community</h1>
-        <div class="person">
-          <div class="person-info">
-            <p class="person-name">Lam Nguyen</p>
-            <p class="person-email">hnguyenh@codeustudents.com</p>
-          </div>
-          <button class="application-action">View</button>
-        </div>
-        <div class="person">
-          <div class="person-info">
-            <p class="person-name">Le Anh Duc</p>
-            <p class="person-email">ale@codeustudents.com</p>
-          </div>
-          <button class="application-action">View</button>
-        </div>
       </div>
     </div>
   </section>

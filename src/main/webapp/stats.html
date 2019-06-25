@@ -1,15 +1,81 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Stats</title>
-    <link rel="stylesheet" href="/css/main.css">
-    <script src="/js/stats-loader.js"></script>
-  </head>
-  <body onload="buildUI()">
-    <div id="content">
-      <h1>Site Statistics</h1>
-      <hr/>
-      <div id="stats-container">Loading...</div>
+<head>
+  <title>Stats</title>
+  <link rel="stylesheet" href="/css/main.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
+  <script src="/js/moment.js"></script>
+  <script src="/js/navigation-loader.js"></script>
+  <script src="/js/stats-loader.js"></script>
+</head>
+<body onload="buildUI()">
+  <nav class="navbar">
+    <div>
+      <div class="navbar-item active">
+        <a href="/">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/aboutus.html">
+          <i class="fas fa-users"></i>
+          About
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/stats.html">
+          <i class="fas fa-chart-line"></i>
+          Stats
+        </a>
+      </div>
     </div>
-  </body>
-</html>
+    <div class="navbar-item login">
+      <a href="/login">
+        <i class="fas fa-sign-in-alt"></i>
+        Sign in
+      </a>
+    </div>
+  </nav>
+  <button class="create-post-btn fixed">
+    <i class="fas fa-signature"></i>
+    Post
+  </button>
+  <section class="content">
+    <div class="public-feed">
+      <div class="public-feed__header">
+        <h1>
+          Site Statistics
+        </h1>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <h1>Applications</h1>
+        <div class="application">
+          <div class="application-info">
+            <img src="/img/bookchart.svg" />
+            Bookchart
+          </div>
+          <a href="/chart.html">
+            <button class="application-action">Start</button>
+          </a>
+        </div>
+        <div class="application">
+          <div class="application-info">
+            <img src="/img/maps.svg" />
+            Maps
+          </div>
+          <a href="/map.html">
+            <button class="application-action">Start</button>
+          </a>
+        </div>
+      </div>
+      <div class="sidebar-card community">
+        <h1>Community</h1>
+      </div>
+    </div>
+  </section>
+</body>
