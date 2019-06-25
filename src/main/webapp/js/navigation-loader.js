@@ -76,3 +76,14 @@ function onBodyLoaded() {
   fetchPublicFeed();
   fetchCommunity();
 }
+
+function handleFixedPostButton() {
+  const top = window.pageYOffset || document.documentElement.scrollTop;
+  if (top >= 100) {
+    document.querySelector(".create-post-btn.fixed").classList.add("show");
+  } else {
+    document.querySelector(".create-post-btn.fixed").classList.remove("show");
+  }
+}
+
+document.addEventListener("scroll", handleFixedPostButton);

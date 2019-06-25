@@ -221,7 +221,11 @@ body {
   background-color: rgba(29, 161, 242, 0.2);
 }
 
-body.logged-in .create-post-btn {
+body.logged-in .create-post-btn:not(.fixed) {
+  display: block;
+}
+
+body.logged-in .create-post-btn.fixed.show {
   display: block;
 }
 
