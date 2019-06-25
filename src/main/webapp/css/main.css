@@ -22,6 +22,7 @@ body {
   padding-left: 13%;
   padding-right: 13%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  z-index: 100;
 }
 
 .navbar-item {
@@ -237,6 +238,7 @@ body {
   right: calc(13% + 2rem);
   padding: 1.2rem 2rem;
   font-size: 1.8rem;
+  z-index: 100;
 }
 
 .create-post-btn:hover {

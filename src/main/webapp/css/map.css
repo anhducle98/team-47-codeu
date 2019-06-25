@@ -1,5 +1,5 @@
-#map, #newMap {
-    width: 500px;
-    height: 500px;
-    border: thin solid black;
+#map,
+#newMap {
+  width: 100%;
+  height: 500px;
 }
