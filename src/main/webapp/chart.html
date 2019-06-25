@@ -3,6 +3,20 @@
   <meta charset="UTF-8" />
   <title>Chart</title>
 
+  <link rel="stylesheet" href="/css/main.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
+  <style>
+    .content {
+      grid-template-columns: 1fr;
+    }
+  </style>
+
+  <script src="/js/moment.js"></script>
+  <script src="/js/navigation-loader.js"></script>
+
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
     const drawChart = async () => {
@@ -19,11 +33,12 @@
         });
         bookData.addRows(bookList.map(({ title, rating }) => [title, rating]));
 
-        const node = document.getElementById("book_chart");
+        const node = document.getElementsByClassName("post")[0];
         new google.visualization.BarChart(node).draw(bookData, {
-          width: 800,
-          height: 400,
-          title: "Books' Rating"
+          width: 900,
+          height: 500,
+          title: "Books' Rating",
+          backgroundColor: "transparent"
         });
       } catch (err) {
         console.log(err);
@@ -35,6 +50,46 @@
   </script>
 </head>
 <body>
-  <h1>Chart</h1>
-  <div id="book_chart"></div>
+  <nav class="navbar">
+    <div>
+      <div class="navbar-item">
+        <a href="/">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/aboutus.html">
+          <i class="fas fa-users"></i>
+          About
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/stats.html">
+          <i class="fas fa-chart-line"></i>
+          Stats
+        </a>
+      </div>
+    </div>
+    <div class="navbar-item login">
+      <a href="/login">
+        <i class="fas fa-sign-in-alt"></i>
+        Sign in
+      </a>
+    </div>
+  </nav>
+  <button class="create-post-btn fixed">
+    <i class="fas fa-signature"></i>
+    Post
+  </button>
+  <section class="content">
+    <div class="public-feed">
+      <div class="public-feed__header">
+        <h1>
+          Bookchart
+        </h1>
+      </div>
+      <div class="post"></div>
+    </div>
+  </section>
 </body>
