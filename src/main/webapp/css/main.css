@@ -119,6 +119,10 @@ body {
   transition: background-color 0.15s ease-in-out;
 }
 
+.user-page .post {
+  padding: 2rem;
+}
+
 .post-header {
   display: flex;
   align-items: center;
@@ -282,4 +286,26 @@ body.logged-in .create-post-btn {
   font-weight: normal;
   line-height: 2rem;
   color: rgb(101, 119, 134);
+}
+
+.message-count {
+  display: flex;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.message-count h2:first-child {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: rgb(20, 23, 26);
+  margin: 0;
+  margin-right: 0.3rem;
+}
+
+.message-count h2:last-child {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin: 0;
+  color: rgb(101, 119, 134);
+  font-weight: normal;
 }

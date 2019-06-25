@@ -28,7 +28,9 @@ function fetchCommunity() {
           <div class="person-info">
             <p class="person-name">${user}</p>
           </div>
-          <button class="application-action">View</button>
+          <a href="${"/user-page.jsp?user=" + user}">
+            <button class="application-action">View</button>
+          </a>
         </div>`;
       });
     });
