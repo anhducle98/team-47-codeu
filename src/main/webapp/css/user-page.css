@@ -17,8 +17,130 @@
 /* Set the size of the message input to be 100 pixels high
    and will fill the width of its parent element. */
 #message-input {
-  height: 100px;
+  height: 12rem;
   width: 100%;
+  border-radius: 0.8rem;
+  border: 1px solid #c6e4f7;
+  padding: 0.6rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  resize: none;
+}
+
+#message-input:focus {
+  border-color: #a3d4f2;
+  box-shadow: 0 0 0 1px #a3d4f2;
+  outline: none;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.8rem;
+}
+
+.actions .file-uploader {
+  width: 3.6rem;
+  height: 3.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.actions .file-uploader__underlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.4);
+  background-color: #e8f4fb;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: 0.15s opacity ease-in-out;
+}
+
+.actions .file-uploader:hover .file-uploader__underlay {
+  opacity: 1;
+}
+
+.file-uploaded textarea {
+  border-radius: 0.8rem 0.8rem 0 0 !important;
+  margin-bottom: -0.1rem !important;
+}
+
+.thumbnail-preview {
+  background: #edf8ff;
+  border-radius: 0 0 0.8rem 0.8rem;
+  overflow: hidden;
+  display: none;
+  padding: 0.8rem 1.6rem;
+}
+
+.file-uploaded .thumbnail-preview {
+  display: block;
+}
+
+.thumbnail {
+  border-radius: 0.8rem;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumbnail .close-btn {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.thumbnail .close-btn i {
+  font-size: 1.4rem;
+  line-height: 1.4rem;
+}
+
+.thumbnail-preview img {
+  height: 10rem;
+}
+
+.actions .file-uploader i {
+  font-size: 2.4rem;
+  line-height: 2.4rem;
+  color: rgba(29, 161, 242, 1);
+  position: relative;
+  z-index: 100;
+}
+
+.post-btn {
+  background-color: rgb(29, 161, 242);
+  border: none;
+  border-radius: 1000rem;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+  padding: 0.8rem 1.6rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.post-btn:hover {
+  background-color: rgb(23, 129, 194);
+}
+
+.post-btn:focus {
+  outline: none;
 }
 
 /* Give each message a rounded border. */

@@ -1,23 +1,65 @@
 <!DOCTYPE html>
-<html>
 <head>
   <title>Google Maps</title>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB93QPT7R9sVl24lY6JWEr6oYBfWFm-ke4"></script>
   <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
   <script src="/js/map-loader.js"></script>
-  <link rel="stylesheet" href="/css/map.css">
+  <script src="/js/navigation-loader.js"></script>
   <link rel="stylesheet" href="/css/main.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
+  <style>
+    .content {
+      grid-template-columns: 1fr;
+    }
+  </style>
+  <link rel="stylesheet" href="/css/map.css" />
 </head>
-<body onload="createMap();">
-  <nav>
-    <ul id="navigation">
-      <li><a href="/">Home</a></li>
-      <li><a href="/map.html">Map</a></li>
-    </ul>
+<body onload="fetchLoginStatus(); createMap();">
+  <nav class="navbar">
+    <div>
+      <div class="navbar-item">
+        <a href="/">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/aboutus.html">
+          <i class="fas fa-users"></i>
+          About
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/stats.html">
+          <i class="fas fa-chart-line"></i>
+          Stats
+        </a>
+      </div>
+    </div>
+    <div class="navbar__login"></div>
   </nav>
-  <h1>Google Maps</h1>
-  <p>This map shows location of every significant earthquakes, 1965-2016!</p>
-  <!-- <div id="map"></div> -->
-  <div id="newMap"></div>
+  <button class="create-post-btn fixed">
+    <i class="fas fa-signature"></i>
+    Post
+  </button>
+  <section class="content">
+    <div class="public-feed">
+      <div class="public-feed__header">
+        <h1>
+          Google Maps
+        </h1>
+      </div>
+      <div class="post">
+        <div class="post-header">
+          <h2 class="post-uploader">
+            This map shows location of every significant earthquakes, 1965-2016!
+          </h2>
+        </div>
+        <div id="newMap" class="post-content"></div>
+      </div>
+    </div>
+  </section>
 </body>
-</html>

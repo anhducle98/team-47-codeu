@@ -16,78 +16,59 @@
 
 // Get ?user=XYZ parameter value
 const urlParams = new URLSearchParams(window.location.search);
-const parameterUsername = urlParams.get('user');
+const parameterUsername = urlParams.get("user");
 
 // URL must include ?user=XYZ parameter. If not, redirect to homepage.
 if (!parameterUsername) {
-  window.location.replace('/');
+  window.location.replace("/");
 }
 
 /** Sets the page title based on the URL parameter username. */
 function setPageTitle() {
-  document.getElementById('page-title').innerText = parameterUsername;
-  document.title = parameterUsername + ' - User Page';
+  document.title = parameterUsername + " - User Page";
+  document.getElementsByClassName("username")[0].innerHTML = parameterUsername;
 }
 
 /**
  * Shows the message form if the user is logged in and viewing their own page.
  */
 function showMessageFormIfViewingSelf() {
-  fetch('/login-status')
-      .then((response) => {
-        return response.json();
-      })
-      .then((loginStatus) => {
-        if (loginStatus.isLoggedIn &&
-            loginStatus.username == parameterUsername) {
-          const messageForm = document.getElementById('message-form');
-          messageForm.classList.remove('hidden');
-        }
-      });
+  fetch("/login-status")
+    .then((response) => {
+      return response.json();
+    })
+    .then((loginStatus) => {
+      if (loginStatus.isLoggedIn && loginStatus.username == parameterUsername) {
+        const messageForm = document.getElementById("message-form");
+        messageForm.classList.remove("hidden");
+      }
+    });
 }
 
 /** Fetches messages and add them to the page. */
 function fetchMessages() {
-  const url = '/messages?user=' + parameterUsername;
+  const url = "/messages?user=" + parameterUsername;
   fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((messages) => {
-        const messagesContainer = document.getElementById('message-container');
-        if (messages.length == 0) {
-          messagesContainer.innerHTML = '<p>This user has no posts yet.</p>';
-        } else {
-          messagesContainer.innerHTML = '';
-        }
-        messages.forEach((message) => {
-          const messageDiv = buildMessageDiv(message);
-          messagesContainer.appendChild(messageDiv);
-        });
+    .then((response) => response.json())
+    .then((messageList) => {
+      const feed = document.getElementsByClassName("public-feed")[0];
+      messageList.forEach((message) => {
+        feed.innerHTML += `<div class="post">
+          <div class="post-header">
+            <h2 class="post-uploader">${message.user}</h2>
+            <span class="dot">·</span>
+            <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
+          </div>
+          <div class="post-content">
+            ${message.text}
+          </div>            
+        </div>`;
       });
-}
-
-/**
- * Builds an element that displays the message.
- * @param {Message} message
- * @return {Element}
- */
-function buildMessageDiv(message) {
-  const headerDiv = document.createElement('div');
-  headerDiv.classList.add('message-header');
-  headerDiv.appendChild(document.createTextNode(
-      message.user + ' - ' + new Date(message.timestamp)));
-
-  const bodyDiv = document.createElement('div');
-  bodyDiv.classList.add('message-body');
-  bodyDiv.innerHTML = message.text;
-
-  const messageDiv = document.createElement('div');
-  messageDiv.classList.add('message-div');
-  messageDiv.appendChild(headerDiv);
-  messageDiv.appendChild(bodyDiv);
-
-  return messageDiv;
+      document.getElementsByClassName("message-count")[0].innerHTML = `
+        <h2>${messageList.length}</h2>
+        <h2>post${messageList.length > 1 ? "s" : ""}</h2>
+      `;
+    });
 }
 
 /** Fetches data and populates the UI of the page. */
@@ -95,4 +76,24 @@ function buildUI() {
   setPageTitle();
   showMessageFormIfViewingSelf();
   fetchMessages();
+}
+
+function clearFileInput() {
+  document.querySelectorAll(".actions input")[0].value = "";
+  document.getElementById("message-form").classList.remove("file-uploaded");
+}
+
+function handleUploadFile(e) {
+  if (e.target.files.length > 0) {
+    const file = e.target.files[0];
+    const url = URL.createObjectURL(file);
+    const previewer = document.getElementsByClassName("thumbnail-preview")[0];
+    previewer.innerHTML = `<div class="thumbnail">
+      <img src="${url}" />
+      <div class="close-btn" onclick="clearFileInput();">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>`;
+    document.getElementById("message-form").classList.add("file-uploaded");
+  }
 }
