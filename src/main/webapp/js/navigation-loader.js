@@ -1,3 +1,27 @@
+function requestTranslation(div) {
+  const text = encodeURIComponent(
+    document.getElementsByClassName("post-content--text")[0].innerHTML
+  );
+  const post = div.parentElement.parentElement;
+  const queryURL = `/translate?text=${text}&sourceLanguageCode=en&targetLanguageCode=vi`;
+  fetch(queryURL, { method: "POST" })
+    .then((response) => {
+      if (response.ok) {
+        return response.text();
+      }
+      throw response;
+    })
+    .then((result) => {
+      div.style.display = "none";
+      post.innerHTML += `<div class="post-translate">
+        <div class="post-translate__header">
+          Translated by <i class="fab fa-google"></i> Google
+        </div>
+        <div class="post-content translate-result">${result}</div>
+      </div>`;
+    });
+}
+
 function fetchPublicFeed() {
   fetch("/feed")
     .then((res) => res.json())
@@ -11,8 +35,12 @@ function fetchPublicFeed() {
             <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
           </div>
           <div class="post-content">
-            ${message.text}
-          </div>            
+            <div class="post-content--text">${message.text}</div>
+            <div class="post-translate--trigger" onclick="requestTranslation(this);">
+              <i class="fas fa-globe-americas"></i>
+              <span>Translate Post</span>
+            </div>
+          </div>      
         </div>`;
       });
     });

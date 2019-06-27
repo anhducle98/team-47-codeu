@@ -59,9 +59,13 @@ function fetchMessages() {
             <span class="dot">·</span>
             <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
           </div>
-          <div class="post-content">
-            ${message.text}
-          </div>            
+          <div class="post-content">            
+            <div class="post-content--text">${message.text}</div>
+            <div class="post-translate--trigger" onclick="requestTranslation(this);">
+              <i class="fas fa-globe-americas"></i>
+              <span>Translate Post</span>
+            </div>
+          </div>
         </div>`;
       });
       document.getElementsByClassName("message-count")[0].innerHTML = `
