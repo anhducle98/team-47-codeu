@@ -1,8 +1,8 @@
 function requestTranslation(div) {
-  const text = encodeURIComponent(
-    document.getElementsByClassName("post-content--text")[0].innerHTML
-  );
   const post = div.parentElement.parentElement;
+  const text = encodeURIComponent(
+    post.getElementsByClassName("post-content--text")[0].innerHTML
+  );
   const queryURL = `/translate?text=${text}&sourceLanguageCode=en&targetLanguageCode=vi`;
   fetch(queryURL, { method: "POST" })
     .then((response) => {
