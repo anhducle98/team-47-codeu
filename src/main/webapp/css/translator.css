@@ -1,0 +1,98 @@
+.post-content.translator {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.post-content.translator select {
+  width: 100%;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 2.1rem;
+  background: #fff;
+  padding: 0.8rem 1.6rem;
+  text-transform: uppercase;
+  -webkit-appearance: none;
+  appearance: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.post-content.translator select:focus {
+  outline: none;
+}
+
+.post-content.translator select:invalid {
+  text-transform: none;
+  background: #fff;
+  font-style: italic;
+  opacity: 0.5;
+}
+
+.post-content.translator option {
+  font-style: normal;
+}
+
+.post-content.translator textarea {
+  width: 100%;
+  height: 24rem;
+  resize: none;
+  font-size: 2rem;
+  line-height: 3rem;
+  border: none;
+  flex-grow: 1;
+}
+
+.post-content.translator textarea:focus {
+  outline: none;
+}
+
+.translator__input-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: #fff;
+}
+
+.translator__input-group:first-child textarea {
+  padding: 0.8rem 2.4rem 0.8rem 1.6rem;
+}
+
+.translator__input-group:last-child textarea {
+  background: rgb(250, 250, 250);
+  padding: 0.8rem 1.6rem 0.8rem 2.4rem;
+}
+
+.translator__reverse {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  padding: 1rem;
+  background-color: rgb(230, 236, 240);
+  border-radius: 50%;
+}
+
+.translator__reverse i {
+  font-size: 2.4rem;
+}
+
+form.post {
+  padding: 0 !important;
+  text-align: right;
+}
+
+.translator__submit {
+  background-color: rgb(29, 161, 242);
+  border: none;
+  border-radius: 1000rem;
+  box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 8px,
+    rgba(101, 119, 134, 0.25) 0px 1px 3px 1px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+  margin: 1rem 2rem 2rem;
+  padding: 0.8rem 1.6rem;
+  transition: background-color 0.15s ease-in-out;
+}
