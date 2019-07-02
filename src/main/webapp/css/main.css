@@ -168,7 +168,7 @@ body {
   display: inline-block;
 }
 
-.post:hover {
+.post:not(.stats):hover {
   background-color: rgb(245, 248, 250);
   cursor: pointer;
 }

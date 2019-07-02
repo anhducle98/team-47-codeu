@@ -139,12 +139,28 @@ public class Datastore {
     Collections.sort(ranking, new Comparator<RankingItem>() {
       @Override
       public int compare(RankingItem a, RankingItem b) {
-        return a.postCount - b.postCount;
+        return -a.postCount + b.postCount;
       }
     });
 
     Gson gson = new Gson();
     String jsonString = gson.toJson(ranking);
+    JsonParser parser = new JsonParser();
+    return parser.parse(jsonString).getAsJsonArray();
+  }
+
+  /**
+   * Get list of messages' post time.
+   * 
+   * @return a list of of post time of all posts in database
+   */
+  public JsonArray getDayChart() {
+    List<Long> timeList = new ArrayList<>();
+    for (Message message : getAllMessages()) {
+      timeList.add(message.getTimestamp());
+    }
+    Gson gson = new Gson();
+    String jsonString = gson.toJson(timeList);
     JsonParser parser = new JsonParser();
     return parser.parse(jsonString).getAsJsonArray();
   }

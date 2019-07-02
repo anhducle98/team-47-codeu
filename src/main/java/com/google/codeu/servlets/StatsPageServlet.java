@@ -32,11 +32,13 @@ public class StatsPageServlet extends HttpServlet {
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setHeader("Access-Control-Allow-Origin", "*");
     response.setContentType("application/json");
 
     JsonObject jsonObject = new JsonObject();
     jsonObject.addProperty("messageCount", datastore.getTotalMessageCount());
     jsonObject.add("ranking", datastore.getRanking());
+    jsonObject.add("dayChart", datastore.getDayChart());
     response.getOutputStream().println(jsonObject.toString());
   }
 }
