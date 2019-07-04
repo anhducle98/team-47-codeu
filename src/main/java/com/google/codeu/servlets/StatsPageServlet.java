@@ -1,6 +1,8 @@
 package com.google.codeu.servlets;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.codeu.data.Datastore;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Responds with a hard-coded message for testing purposes.
@@ -28,13 +32,13 @@ public class StatsPageServlet extends HttpServlet {
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    response.setHeader("Access-Control-Allow-Origin", "*");
     response.setContentType("application/json");
 
-    int messageCount = datastore.getTotalMessageCount();
-
     JsonObject jsonObject = new JsonObject();
-    jsonObject.addProperty("messageCount", messageCount);
+    jsonObject.addProperty("messageCount", datastore.getTotalMessageCount());
+    jsonObject.add("ranking", datastore.getRanking());
+    jsonObject.add("dayChart", datastore.getDayChart());
     response.getOutputStream().println(jsonObject.toString());
   }
 }

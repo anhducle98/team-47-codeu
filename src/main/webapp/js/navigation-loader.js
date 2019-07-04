@@ -1,8 +1,9 @@
 function requestTranslation(div) {
   const post = div.parentElement.parentElement;
   const text = encodeURIComponent(
-    post.getElementsByClassName("post-content--text")[0].innerHTML
-      .replace(/<img .*?>/g, "\n")
+    post
+      .getElementsByClassName("post-content--text")[0]
+      .innerHTML.replace(/<img .*?>/g, "\n")
       .replace(/<p>Suggested tags: .*?<\/p>/g, "\n")
   );
   const queryURL = `/translate?text=${text}&sourceLanguageCode=en&targetLanguageCode=vi`;

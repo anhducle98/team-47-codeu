@@ -22,9 +22,21 @@ import com.google.appengine.api.images.*;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.cloud.vision.v1.EntityAnnotation;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
 import java.util.*;
+
+class RankingItem {
+  public String user;
+  public int postCount;
+
+  public RankingItem(String user, int postCount) {
+    this.user = user;
+    this.postCount = postCount;
+  }
+}
 
 /** Provides access to the data stored in Datastore. */
 public class Datastore {
@@ -85,28 +97,71 @@ public class Datastore {
   /**
    * Gets messages posted by a specific user.
    *
-   * @return a list of messages posted by the user, or empty list if user has never posted a
-   *     message. List is sorted by time descending.
+   * @return a list of messages posted by the user, or empty list if user has
+   *         never posted a message. List is sorted by time descending.
    */
   public List<Message> getMessages(String user) {
-    return queryMessages(new Query("Message")
-            .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
-            .addSort("timestamp", SortDirection.DESCENDING));
+    return queryMessages(new Query("Message").setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
+        .addSort("timestamp", SortDirection.DESCENDING));
   }
 
   /**
    * Gets all messages
    *
-   * @return a list of all messages posted by any user. List is sorted by time descending.
+   * @return a list of all messages posted by any user. List is sorted by time
+   *         descending.
    */
   public List<Message> getAllMessages() {
     return queryMessages(new Query("Message").addSort("timestamp", SortDirection.DESCENDING));
   }
 
   /** Returns the total number of messages for all users. */
-  public int getTotalMessageCount(){
+  public int getTotalMessageCount() {
     Query query = new Query("Message");
     PreparedQuery results = datastore.prepare(query);
     return results.countEntities(FetchOptions.Builder.withLimit(1000));
+  }
+
+  /**
+   * Get top 10 users with most posts
+   * 
+   * @return a list of at most 10 users with most posts, each element is in the
+   *         form { user, postCount }
+   */
+  public JsonArray getRanking() {
+    List<RankingItem> ranking = new ArrayList<>();
+    Set<String> userList = getUsers();
+    for (String user : userList) {
+      RankingItem item = new RankingItem(user, getMessages(user).size());
+      ranking.add(item);
+    }
+
+    Collections.sort(ranking, new Comparator<RankingItem>() {
+      @Override
+      public int compare(RankingItem a, RankingItem b) {
+        return -a.postCount + b.postCount;
+      }
+    });
+
+    Gson gson = new Gson();
+    String jsonString = gson.toJson(ranking.subList(0, Math.min(ranking.size(), 10)));
+    JsonParser parser = new JsonParser();
+    return parser.parse(jsonString).getAsJsonArray();
+  }
+
+  /**
+   * Get list of messages' post time.
+   * 
+   * @return a list of of post time of all posts in database
+   */
+  public JsonArray getDayChart() {
+    List<Long> timeList = new ArrayList<>();
+    for (Message message : getAllMessages()) {
+      timeList.add(message.getTimestamp());
+    }
+    Gson gson = new Gson();
+    String jsonString = gson.toJson(timeList);
+    JsonParser parser = new JsonParser();
+    return parser.parse(jsonString).getAsJsonArray();
   }
 }
