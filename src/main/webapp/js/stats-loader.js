@@ -32,9 +32,7 @@ function nth(d) {
 // Fetch stats and display them in the page.
 async function fetchStats() {
   const statsContainer = document.getElementsByClassName("public-feed")[0];
-  const stats = await fetch("http://localhost:8080/stats").then((response) =>
-    response.json()
-  );
+  const stats = await fetch("/stats").then((response) => response.json());
 
   // Stats on ranking
   const table = stats.ranking

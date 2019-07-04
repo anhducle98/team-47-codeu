@@ -126,7 +126,7 @@ public class Datastore {
    * Get top 10 users with most posts
    * 
    * @return a list of at most 10 users with most posts, each element is in the
-   *         form [post_count, user_name
+   *         form { user, postCount }
    */
   public JsonArray getRanking() {
     List<RankingItem> ranking = new ArrayList<>();
@@ -144,7 +144,7 @@ public class Datastore {
     });
 
     Gson gson = new Gson();
-    String jsonString = gson.toJson(ranking);
+    String jsonString = gson.toJson(ranking.subList(0, Math.min(ranking.size(), 10)));
     JsonParser parser = new JsonParser();
     return parser.parse(jsonString).getAsJsonArray();
   }
