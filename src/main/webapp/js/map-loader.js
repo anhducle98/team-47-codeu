@@ -1,37 +1,78 @@
-let newMap;
+let map;
 let editMarker;
 
+function initAutocomplete() {
+  // Create the search box and link it to the UI element.
+  var input = document.getElementById('pac-input');
+  var searchBox = new google.maps.places.SearchBox(input);
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+  // Bias the SearchBox results towards current map's viewport.
+  map.addListener('bounds_changed', function() {
+    searchBox.setBounds(map.getBounds());
+  });
+
+  var markers = [];
+  // Listen for the event fired when the user selects a prediction and retrieve
+  // more details for that place.
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+
+    // Clear out the old markers.
+    markers.forEach(function(marker) {
+      marker.setMap(null);
+    });
+    markers = [];
+
+    // For each place, get the icon, name and location.
+    var bounds = new google.maps.LatLngBounds();
+    places.forEach(function(place) {
+      if (!place.geometry) {
+        console.log("Returned place contains no geometry");
+        return;
+      }
+      var icon = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+
+      // Create a marker for each place.
+      markers.push(new google.maps.Marker({
+        map: map,
+        icon: icon,
+        title: place.name,
+        position: place.geometry.location
+      }));
+
+      if (place.geometry.viewport) {
+        // Only geocodes have viewport.
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+    map.fitBounds(bounds);
+  });
+}
+
 function createMap (){
-  // var markers = new Array();
-  // fetch('/map').then((response) => {
-  //   return response.json();
-  // }).then((earthquakes) => {
-  //   const map = new google.maps.Map(document.getElementById('map'), {
-  //     center: {lat: 35.78613674, lng: -119.4491591},
-  //     zoom: 7
-  //   });
-
-  //   earthquakes.forEach((earthquake) => {
-  //     var marker = new google.maps.Marker({
-  //       position: {lat: earthquake.lat, lng: earthquake.lng},
-  //       map: map
-  //     })
-  //     markers.push(marker);
-  //   });
-
-  //   var markerCluster = new MarkerClusterer(map, markers,
-  //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-  // })
-
-  newMap = new google.maps.Map(document.getElementById('newMap'), {
+  map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 38.5949, lng: -94.8923},
     zoom: 4
   });
 
-  newMap.addListener('click', (event) => {
+  map.addListener('click', (event) => {
     createMarkerForEdit(event.latLng.lat(), event.latLng.lng());
   });
   fetchMarkers();
+  initAutocomplete();
 }
 
 function createMarkerForEdit(lat, lng){
@@ -40,7 +81,7 @@ function createMarkerForEdit(lat, lng){
   }
   editMarker = new google.maps.Marker({
     position: {lat: lat, lng: lng},
-    map: newMap
+    map: map
   });
   const infoWindow = new google.maps.InfoWindow({
     content: buildInfoWindowInput(lat, lng)
@@ -48,7 +89,7 @@ function createMarkerForEdit(lat, lng){
   google.maps.event.addListener(infoWindow, 'closeclick', () => {
     editMarker.setMap(null);
   });
-  infoWindow.open(newMap, editMarker);
+  infoWindow.open(map, editMarker);
 }
 
 function buildInfoWindowInput(lat, lng){
@@ -81,13 +122,13 @@ function postMarker(lat, lng, content){
 function createMarkerForDisplay(lat, lng, content){
   const marker = new google.maps.Marker({
     position: {lat: lat, lng: lng},
-    map: newMap
+    map: map
   });
   var infoWindow = new google.maps.InfoWindow({
     content: content
   });
   marker.addListener('click', () => {
-    infoWindow.open(newMap, marker);
+    infoWindow.open(map, marker);
   });
 }
 
