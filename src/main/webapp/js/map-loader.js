@@ -1,6 +1,9 @@
 let map;
 let editMarker;
 
+let currentLocation;
+let currentLocationMarker;
+
 function initAutocomplete() {
   // Create the search box and link it to the UI element.
   var input = document.getElementById('pac-input');
@@ -65,8 +68,10 @@ function initAutocomplete() {
 function createMap (){
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 38.5949, lng: -94.8923},
-    zoom: 4
+    zoom: 15
   });
+
+  initCurrentLocation();
 
   map.addListener('click', (event) => {
     createMarkerForEdit(event.latLng.lat(), event.latLng.lng());
@@ -75,7 +80,57 @@ function createMap (){
   initAutocomplete();
 }
 
-function createMarkerForEdit(lat, lng){
+function tryCurrentLocation() {
+  var imgX = '0';
+  var animationInterval = setInterval(function(){
+    if (imgX == '-18') imgX = '0'; else imgX = '-18';
+    $('#current-location-image').css('background-position', imgX + 'px 0px');
+  }, 500);
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      currentLocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      map.setCenter(currentLocation);
+      currentLocationMarker.setPosition(currentLocation);
+
+      clearInterval(animationInterval);
+      $('#current-location-image').css('background-position', '-144px 0px');
+    });
+  } else {
+    clearInterval(animationInterval);
+    $('#current-location-image').css('background-position', '0px 0px');
+    console.println("Geolocation service is not available");
+  }
+}
+
+function initCurrentLocation() {
+  var controlDiv = document.createElement('div');
+  var firstChild = document.createElement('button');
+  firstChild.id = 'current-location-button';
+  controlDiv.appendChild(firstChild);
+  var secondChild = document.createElement('div');
+  secondChild.id = 'current-location-image';
+  firstChild.appendChild(secondChild);
+
+  currentLocationMarker = new google.maps.Marker({
+    position: {lat: 38.5949, lng: -94.8923},
+    map: map
+  });
+
+  google.maps.event.addListener(map, 'dragend', function() {
+    $('#current-location-image').css('background-position', '0px 0px');
+  });
+
+  firstChild.addEventListener('click', tryCurrentLocation);
+
+  controlDiv.index = 1;
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
+}
+
+function createMarkerForEdit(lat, lng) {
   if(editMarker){
     editMarker.setMap(null);
   }
