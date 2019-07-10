@@ -1,4 +1,5 @@
 function requestTranslation(div) {
+  div.style.visibility = "hidden";
   const post = div.parentElement.parentElement;
   const text = encodeURIComponent(
     post
