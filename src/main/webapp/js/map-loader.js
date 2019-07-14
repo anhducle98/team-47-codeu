@@ -216,6 +216,6 @@ function postMessage() {
         method: "post",
         body: data,
     })
-    .then(function(res){ console.log(res) })
+    .then(function(res){ location.reload(); })
     .catch(function(res){ console.log(res) })
 }
