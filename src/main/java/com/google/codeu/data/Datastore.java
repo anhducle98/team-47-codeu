@@ -19,6 +19,7 @@ package com.google.codeu.data;
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.blobstore.*;
 import com.google.appengine.api.images.*;
+import com.google.appengine.api.search.GeoPoint;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.cloud.vision.v1.EntityAnnotation;
@@ -55,6 +56,8 @@ public class Datastore {
     messageEntity.setProperty("timestamp", message.getTimestamp());
     messageEntity.setProperty("imageBlobKey", message.getImageBlobKey());
     messageEntity.setProperty("imageLabels", message.getImageLabels());
+    messageEntity.setProperty("location_lat", message.getLocation().getLatitude());
+    messageEntity.setProperty("location_lng", message.getLocation().getLongitude());
     datastore.put(messageEntity);
   }
 
@@ -82,8 +85,11 @@ public class Datastore {
         long timestamp = (long) entity.getProperty("timestamp");
         BlobKey imageBlobKey = (BlobKey) entity.getProperty("imageBlobKey");
         String imageLabels = (String) entity.getProperty("imageLabels");
+        double lat = (double) entity.getProperty("location_lat");
+        double lng = (double) entity.getProperty("location_lng");
+        GeoPoint location = new GeoPoint(lat, lng);
 
-        Message message = new Message(id, user, text, timestamp, imageBlobKey, imageLabels);
+        Message message = new Message(id, user, text, timestamp, imageBlobKey, imageLabels, location);
         messages.add(message);
       } catch (Exception e) {
         System.err.println("Error reading message.");
