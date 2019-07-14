@@ -71,14 +71,10 @@ blobstoreService.createUploadUrl("/messages"); %>
     <div class="navbar__login"></div>
   </nav>
   <section class="content user-page">
-
-    <div class="foo">
-      <div class="post">
-          <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-          <div id="map" class="post-content"></div>
-      </div>
+    <div class="post">
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <div id="map" class="post-content"></div>
     </div>
-
     <div class="public-feed">
       <div class="public-feed__header" style="display: block;">
         <h1 class="username"></h1>
@@ -109,7 +105,7 @@ blobstoreService.createUploadUrl("/messages"); %>
               onchange="handleUploadFile(event);"
             />
           </label>
-          <button type="submit" class="post-btn">Post</button>
+          <button class="post-btn" type="button" onclick="postMessage();">Post</button>
         </div>
       </form>
     </div>

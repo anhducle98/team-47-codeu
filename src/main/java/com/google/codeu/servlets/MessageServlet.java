@@ -44,12 +44,15 @@ import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import com.google.protobuf.ByteString;
 
 /** Handles fetching and saving {@link Message} instances. */
 @WebServlet("/messages")
 public class MessageServlet extends HttpServlet {
+
+  private static Logger logger = Logger.getLogger(MessageServlet.class.getName());
 
   private Datastore datastore;
 
@@ -94,24 +97,31 @@ public class MessageServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     if (!userService.isUserLoggedIn()) {
       response.sendRedirect("/index.html");
+      logger.info("DIRECT");
       return;
     }
 
-    String user = userService.getCurrentUser().getEmail();
-    String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
-    BlobKey imageBlobKey = getUploadedImageBlobKey(request);
-    List<EntityAnnotation> imageLabels = null;
+    // String user = userService.getCurrentUser().getEmail();
+    // String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
+    // String[] now = request.getParameterValues("lat");
+    double lat = Double.parseDouble(request.getParameter("lat"));
+    double lng = Double.parseDouble(request.getParameter("lng"));
+    // logger.info("TEXT " + request.getParameter("text"));
+    logger.info("LAT " + lat);
+    logger.info("LNG " + lng);
+    // BlobKey imageBlobKey = getUploadedImageBlobKey(request);
+    // List<EntityAnnotation> imageLabels = null;
 
-    if (imageBlobKey != null) {
-      // Get the labels of the image that the user uploaded.
-      byte[] blobBytes = getBlobBytes(imageBlobKey);
-      imageLabels = getImageLabels(blobBytes);
-    }
+    // if (imageBlobKey != null) {
+    //   // Get the labels of the image that the user uploaded.
+    //   byte[] blobBytes = getBlobBytes(imageBlobKey);
+    //   imageLabels = getImageLabels(blobBytes);
+    // }
 
-    Message message = new Message(user, text, imageBlobKey, imageLabels);
-    datastore.storeMessage(message);
+    // Message message = new Message(user, text, imageBlobKey, imageLabels);
+    // datastore.storeMessage(message);
 
-    response.sendRedirect("/user-page.jsp?user=" + user);
+    // response.sendRedirect("/user-page.jsp?user=" + user);
   }
 
   private BlobKey getUploadedImageBlobKey(HttpServletRequest request){

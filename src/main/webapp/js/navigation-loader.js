@@ -111,10 +111,12 @@ function onBodyLoaded() {
 
 function handleFixedPostButton() {
   const top = window.pageYOffset || document.documentElement.scrollTop;
-  if (top >= 100) {
-    document.querySelector(".create-post-btn.fixed").classList.add("show");
-  } else {
-    document.querySelector(".create-post-btn.fixed").classList.remove("show");
+  if (document.querySelector(".create-post-btn.fixed")) {
+    if (top >= 100) {
+      document.querySelector(".create-post-btn.fixed").classList.add("show");
+    } else {
+      document.querySelector(".create-post-btn.fixed").classList.remove("show");
+    }
   }
 }
 
