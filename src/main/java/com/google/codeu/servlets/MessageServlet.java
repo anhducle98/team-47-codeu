@@ -101,27 +101,28 @@ public class MessageServlet extends HttpServlet {
       return;
     }
 
-    // String user = userService.getCurrentUser().getEmail();
-    // String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
+    String user = userService.getCurrentUser().getEmail();
+    String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
+    
     // String[] now = request.getParameterValues("lat");
     double lat = Double.parseDouble(request.getParameter("lat"));
     double lng = Double.parseDouble(request.getParameter("lng"));
     // logger.info("TEXT " + request.getParameter("text"));
     logger.info("LAT " + lat);
     logger.info("LNG " + lng);
-    // BlobKey imageBlobKey = getUploadedImageBlobKey(request);
-    // List<EntityAnnotation> imageLabels = null;
+    BlobKey imageBlobKey = getUploadedImageBlobKey(request);
+    List<EntityAnnotation> imageLabels = null;
 
-    // if (imageBlobKey != null) {
-    //   // Get the labels of the image that the user uploaded.
-    //   byte[] blobBytes = getBlobBytes(imageBlobKey);
-    //   imageLabels = getImageLabels(blobBytes);
-    // }
+    if (imageBlobKey != null) {
+      // Get the labels of the image that the user uploaded.
+      byte[] blobBytes = getBlobBytes(imageBlobKey);
+      imageLabels = getImageLabels(blobBytes);
+    }
 
-    // Message message = new Message(user, text, imageBlobKey, imageLabels);
-    // datastore.storeMessage(message);
+    Message message = new Message(user, text, imageBlobKey, imageLabels);
+    datastore.storeMessage(message);
 
-    // response.sendRedirect("/user-page.jsp?user=" + user);
+    response.sendRedirect("/user-page.jsp?user=" + user);
   }
 
   private BlobKey getUploadedImageBlobKey(HttpServletRequest request){
