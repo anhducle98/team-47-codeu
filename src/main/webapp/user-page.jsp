@@ -69,7 +69,7 @@ blobstoreService.createUploadUrl("/messages"); %>
       </div>
       <div class="navbar-item">
         <a href="/search.html">
-          <i class="fas fa-chart-line"></i>
+          <i class="fas fa-search"></i>
           Search
         </a>
       </div>
