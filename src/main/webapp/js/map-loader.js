@@ -1,8 +1,11 @@
+const RADIUS_INCREASE_RATE = 2;
+let radius; // increase exponentially by RADIUS_INCREASE_RATE
+
 let map;
 let editMarker;
-
 let currentLocation;
 let currentLocationMarker;
+let messagesList = [];
 
 function initAutocomplete() {
   // Create the search box and link it to the UI element.
@@ -128,6 +131,9 @@ function initCurrentLocation() {
 
   controlDiv.index = 1;
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
+
+  let test = document.getElementById("current-location-image");
+  console.log(test);
 }
 
 function createMarkerForEdit(lat, lng) {
@@ -197,7 +203,6 @@ function fetchMarkers(){
   });
 }
 
-
 function postMessage() {
     const data = new FormData();
     var docForm = document.getElementById("message-form");
@@ -221,4 +226,27 @@ function postMessage() {
       window.location.replace(res.url);}
     )
     .catch(function(res){ console.log(res) })
+}
+
+function fetchMessagesInRange(lowerbound, upperbound) {
+  var params = {
+    lowerbound: lowerbound,
+    upperbound: upperbound,
+    latitude: currentLocation.lat,
+    longitude: currentLocation.lng
+  };
+
+  var esc = encodeURIComponent;
+  var query = Object.keys(params).map(k => esc(k) + '=' + esc(params[k])).join('&');
+  fetch('/search?' + query).then((response) => {
+    return response.json();
+  }).then((messages) => {
+    messagesList = messagesList.concat(messages);
+  });
+}
+
+function fetchMoreMessages() {
+  let newRadius = radius * RADIUS_INCREASE_RATE;
+  fetchMessages(radius, newRadius);
+  radius = newRadius;
 }
