@@ -24,6 +24,7 @@ blobstoreService.createUploadUrl("/messages"); %>
   <title>User Page</title>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/map.css" />
   <link rel="stylesheet" href="/css/user-page.css" />
   <link
     rel="stylesheet"
@@ -37,11 +38,15 @@ blobstoreService.createUploadUrl("/messages"); %>
       grid-template-columns: 1fr;
     }
   </style>
+  <script src="/js/jquery-3.4.1.min.js"></script>
   <script src="/js/moment.js"></script>
   <script src="/js/user-page-loader.js"></script>
   <script src="/js/navigation-loader.js"></script>
+  <script src="/js/map-loader.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB93QPT7R9sVl24lY6JWEr6oYBfWFm-ke4&libraries=places"
+         async defer></script>
 </head>
-<body onload="fetchLoginStatus(); buildUI();">
+<body onload="fetchLoginStatus(); buildUI(); createMap();">
   <nav class="navbar">
     <div>
       <div class="navbar-item">
@@ -66,6 +71,10 @@ blobstoreService.createUploadUrl("/messages"); %>
     <div class="navbar__login"></div>
   </nav>
   <section class="content user-page">
+    <div class="post">
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <div id="map" class="post-content"></div>
+    </div>
     <div class="public-feed">
       <div class="public-feed__header" style="display: block;">
         <h1 class="username"></h1>
@@ -96,7 +105,7 @@ blobstoreService.createUploadUrl("/messages"); %>
               onchange="handleUploadFile(event);"
             />
           </label>
-          <button type="submit" class="post-btn">Post</button>
+          <button class="post-btn" type="button" onclick="postMessage();">Post</button>
         </div>
       </form>
     </div>

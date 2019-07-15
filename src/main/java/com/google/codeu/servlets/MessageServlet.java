@@ -20,6 +20,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.blobstore.*;
 import com.google.appengine.api.images.*;
+import com.google.appengine.api.search.*;
 
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
@@ -44,12 +45,15 @@ import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import com.google.protobuf.ByteString;
 
 /** Handles fetching and saving {@link Message} instances. */
 @WebServlet("/messages")
 public class MessageServlet extends HttpServlet {
+
+  private static Logger logger = Logger.getLogger(MessageServlet.class.getName());
 
   private Datastore datastore;
 
@@ -99,6 +103,9 @@ public class MessageServlet extends HttpServlet {
 
     String user = userService.getCurrentUser().getEmail();
     String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
+    double lat = Double.parseDouble(request.getParameter("lat"));
+    double lng = Double.parseDouble(request.getParameter("lng"));
+
     BlobKey imageBlobKey = getUploadedImageBlobKey(request);
     List<EntityAnnotation> imageLabels = null;
 
@@ -108,7 +115,8 @@ public class MessageServlet extends HttpServlet {
       imageLabels = getImageLabels(blobBytes);
     }
 
-    Message message = new Message(user, text, imageBlobKey, imageLabels);
+    GeoPoint location = new GeoPoint(lat, lng);
+    Message message = new Message(user, text, imageBlobKey, imageLabels, location);
     datastore.storeMessage(message);
 
     response.sendRedirect("/user-page.jsp?user=" + user);

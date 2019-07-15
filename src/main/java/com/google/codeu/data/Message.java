@@ -22,6 +22,7 @@ import java.util.List;
 import com.google.appengine.api.images.*;
 import com.google.appengine.api.blobstore.*;
 import com.google.cloud.vision.v1.EntityAnnotation;
+import com.google.appengine.api.search.*;
 
 /** A single message posted by a user. */
 public class Message {
@@ -32,26 +33,28 @@ public class Message {
   private long timestamp;
   private BlobKey imageBlobKey;
   private String imageLabels;
+  private GeoPoint location;
 
   /**
    * Constructs a new {@link Message} posted by {@code user} with {@code text} content. Generates a
    * random ID and uses the current system time for the creation time.
    */
-  public Message(String user, String text, BlobKey imageBlobKey, List<EntityAnnotation> labelsList) {
-    this(UUID.randomUUID(), user, text, System.currentTimeMillis(), imageBlobKey, joinImageLabes(labelsList));
+  public Message(String user, String text, BlobKey imageBlobKey, List<EntityAnnotation> labelsList, GeoPoint location) {
+    this(UUID.randomUUID(), user, text, System.currentTimeMillis(), imageBlobKey, joinImageLabes(labelsList), location);
   }
 
-  public Message(String user, String text, BlobKey imageBlobKey, String imageLabels) {
-    this(UUID.randomUUID(), user, text, System.currentTimeMillis(), imageBlobKey, imageLabels);
+  public Message(String user, String text, BlobKey imageBlobKey, String imageLabels, GeoPoint location) {
+    this(UUID.randomUUID(), user, text, System.currentTimeMillis(), imageBlobKey, imageLabels, location);
   }
 
-  public Message(UUID id, String user, String text, long timestamp, BlobKey imageBlobKey, String imageLabels) {
+  public Message(UUID id, String user, String text, long timestamp, BlobKey imageBlobKey, String imageLabels, GeoPoint location) {
     this.id = id;
     this.user = user;
     this.text = text;
     this.timestamp = timestamp;
     this.imageBlobKey = imageBlobKey;
     this.imageLabels = imageLabels;
+    this.location = location;
   }
 
   private static String joinImageLabes(List<EntityAnnotation> labelsList) {
@@ -93,6 +96,10 @@ public class Message {
 
   public String getImageLabels() {
     return imageLabels;
+  }
+
+  public GeoPoint getLocation() {
+    return location;
   }
 
   public void replaceImage() {

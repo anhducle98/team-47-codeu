@@ -19,9 +19,12 @@ import java.lang.String;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 @WebServlet("/markers")
 public class MarkerServlet extends HttpServlet {
+
+  private static Logger logger = Logger.getLogger(MarkerServlet.class.getName());
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

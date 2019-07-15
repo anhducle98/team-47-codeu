@@ -139,7 +139,8 @@ body {
   font-weight: 700;
 }
 
-.post-header .post-date {
+.post-header .post-date,
+.post-header .post-location {
   font-weight: 400;
   color: rgb(101, 119, 134);
 }

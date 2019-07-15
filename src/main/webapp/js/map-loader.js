@@ -196,3 +196,29 @@ function fetchMarkers(){
     });
   });
 }
+
+
+function postMessage() {
+    const data = new FormData();
+    var docForm = document.getElementById("message-form");
+
+    data.append('lat', editMarker.getPosition().lat().toString());
+    data.append('lng', editMarker.getPosition().lng().toString());
+
+    for (const pair of new FormData(docForm)) {
+        data.append(pair[0], pair[1]);
+    }
+
+    console.log(data);
+
+    const uploadUrl = docForm.action;
+    fetch(uploadUrl, {
+        method: "post",
+        body: data,
+    })
+    .then(function(res){
+      console.log(res);
+      window.location.replace(res.url);}
+    )
+    .catch(function(res){ console.log(res) })
+}
