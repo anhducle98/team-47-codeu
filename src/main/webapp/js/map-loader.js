@@ -1,11 +1,7 @@
-const RADIUS_INCREASE_RATE = 2;
-let radius; // increase exponentially by RADIUS_INCREASE_RATE
-
 let map;
 let editMarker;
 let currentLocation;
 let currentLocationMarker;
-let messagesList = [];
 
 function initAutocomplete() {
   // Create the search box and link it to the UI element.
@@ -83,7 +79,7 @@ function createMap (){
   initAutocomplete();
 }
 
-function tryCurrentLocation() {
+function tryCurrentLocation(callback) {
   var imgX = '0';
   var animationInterval = setInterval(function(){
     if (imgX == '-18') imgX = '0'; else imgX = '-18';
@@ -92,15 +88,17 @@ function tryCurrentLocation() {
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
-      currentLocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
+      currentLocation = new google.maps.LatLng(
+        position.coords.latitude,
+        position.coords.longitude
+      );
       map.setCenter(currentLocation);
       currentLocationMarker.setPosition(currentLocation);
 
       clearInterval(animationInterval);
       $('#current-location-image').css('background-position', '-144px 0px');
+
+      if (typeof callback === 'function') callback();
     });
   } else {
     clearInterval(animationInterval);
@@ -120,7 +118,16 @@ function initCurrentLocation() {
 
   currentLocationMarker = new google.maps.Marker({
     position: {lat: 38.5949, lng: -94.8923},
-    map: map
+    map: map,
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      fillColor: 'blue',
+      fillOpacity: .7,
+      scale: 7,
+      strokeColor: 'white',
+      strokeWeight: 1,
+      strokeOpacity: 0.9
+    }
   });
 
   google.maps.event.addListener(map, 'dragend', function() {
@@ -131,9 +138,6 @@ function initCurrentLocation() {
 
   controlDiv.index = 1;
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
-
-  let test = document.getElementById("current-location-image");
-  console.log(test);
 }
 
 function createMarkerForEdit(lat, lng) {
@@ -226,27 +230,4 @@ function postMessage() {
       window.location.replace(res.url);}
     )
     .catch(function(res){ console.log(res) })
-}
-
-function fetchMessagesInRange(lowerbound, upperbound) {
-  var params = {
-    lowerbound: lowerbound,
-    upperbound: upperbound,
-    latitude: currentLocation.lat,
-    longitude: currentLocation.lng
-  };
-
-  var esc = encodeURIComponent;
-  var query = Object.keys(params).map(k => esc(k) + '=' + esc(params[k])).join('&');
-  fetch('/search?' + query).then((response) => {
-    return response.json();
-  }).then((messages) => {
-    messagesList = messagesList.concat(messages);
-  });
-}
-
-function fetchMoreMessages() {
-  let newRadius = radius * RADIUS_INCREASE_RATE;
-  fetchMessages(radius, newRadius);
-  radius = newRadius;
 }
