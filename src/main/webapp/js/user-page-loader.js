@@ -59,11 +59,17 @@ function fetchMessages() {
             <span class="dot">·</span>
             <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
           </div>
-          <div class="post-header">
-            <h2 class="post-location">Location: ${message.location.latitude} ${message.location.longitude} </h2>
-          </div>
           <div class="post-content">            
             <div class="post-content--text">${message.text}</div>
+            <div class="post-translate--trigger">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>
+                ${convertLatLongToDMS(
+                  message.location.latitude,
+                  message.location.longitude
+                )}
+              </span>
+            </div>
             <div class="post-translate--trigger" onclick="requestTranslation(this);">
               <i class="fas fa-globe-americas"></i>
               <span>Translate Post</span>
