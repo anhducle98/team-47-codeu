@@ -1,5 +1,6 @@
 const RADIUS_INCREASE_RATE = 1.5;
 const EARTH_CIRCUMFERENCE = 40075000; // should only consider radius <= EARTH_CIRCUMFERENCE / 2
+const RADIUS_LIMIT = 100000; // 100 km
 const INITIAL_RADIUS = 1000; // 1 kilometer
 
 let radius = 0; // increase exponentially by RADIUS_INCREASE_RATE
@@ -105,8 +106,10 @@ function updateSearchResults(newMessageList) {
 }
 
 function fetchMoreMessages() {
+  if (radius >= RADIUS_LIMIT) return;
   let newRadius = Math.max(radius * RADIUS_INCREASE_RATE, 1000);
-  if (newRadius >= EARTH_CIRCUMFERENCE) return;
+  newRadius = Math.min(newRadius, RADIUS_LIMIT);
+
   fetchMessagesInRange(radius, newRadius).then((newMessageList) => {
     radius = newRadius;
 
