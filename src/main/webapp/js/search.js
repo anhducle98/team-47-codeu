@@ -1,4 +1,4 @@
-const RADIUS_INCREASE_RATE = 2;
+const RADIUS_INCREASE_RATE = 1.5;
 const EARTH_CIRCUMFERENCE = 40075000; // should only consider radius <= EARTH_CIRCUMFERENCE / 2
 const INITIAL_RADIUS = 1000; // 1 kilometer
 
@@ -89,7 +89,14 @@ function updateSearchResults(newMessageList) {
     </div>`;
   });
   messageList = messageList.concat(newMessageList);
+
+  radius = getMaxDistance(map.getCenter(), messageList) * 1.1;
+
   document.getElementsByClassName("message-count")[0].innerHTML = `
+    <h2>Search radius: </h2>
+    <h2>${(radius / 1000.0).toFixed(2)} km</h2>
+  `;
+  document.getElementsByClassName("message-count")[1].innerHTML = `
     <h2>${messageList.length}</h2>
     <h2>post${messageList.length > 1 ? "s" : ""}</h2>
   `;
@@ -109,10 +116,6 @@ function fetchMoreMessages() {
     }
 
     updateSearchResults(newMessageList);
-    
-    // let maxDistance = getMaxDistance(map.getCenter(), messageList) * 1.1;
-    // setRadius(maxDistance);
-
   });
 }
 
