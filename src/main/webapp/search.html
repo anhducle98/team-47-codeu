@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<head>
+  <title>Search</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/map.css" />
+  <link rel="stylesheet" href="/css/user-page.css" />
+  <link rel="stylesheet" href="/css/search.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
+  <style>
+    .username {
+      padding-bottom: 0 !important;
+    }
+    .content {
+      grid-template-columns: 1fr;
+    }
+  </style>
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script src="/js/moment.js"></script>
+  <script src="/js/navigation-loader.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB93QPT7R9sVl24lY6JWEr6oYBfWFm-ke4&libraries=places,geometry" async defer></script>
+  <script src="/js/map-loader.js"></script>
+  <script src="/js/search.js"></script>
+</head>
+<body onload="fetchLoginStatus(); createMap(); initSearch()">
+  <nav class="navbar">
+    <div>
+      <div class="navbar-item">
+        <a href="/">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/aboutus.html">
+          <i class="fas fa-users"></i>
+          About
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/stats.html">
+          <i class="fas fa-chart-line"></i>
+          Stats
+        </a>
+      </div>
+      <div class="navbar-item">
+        <a href="/search.html">
+          <i class="fas fa-search"></i>
+          Search
+        </a>
+      </div>
+    </div>
+    <div class="navbar__login"></div>
+  </nav>
+  <section class="content user-page">
+    <div class="post">
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <div id="map" class="post-content"></div>
+    </div>
+    <div class="public-feed">
+      <div class="public-feed__header" style="display: block;">
+        <div class="message-count">
+          <h2></h2>
+          <h2></h2>
+        </div>
+        <div class="message-count">
+          <h2></h2>
+          <h2></h2>
+      </div>
+    </div>
+  </section>
+  <div id="loadmore-div">
+    <button class="loadmore-btn" type="button" onclick="fetchMoreMessages();">Load More</button>
+  </div>
+</body>

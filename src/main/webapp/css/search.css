@@ -1,0 +1,25 @@
+.loadmore-btn {
+  background-color: rgb(29, 161, 242);
+  border: none;
+  border-radius: 1000rem;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+  padding: 0.8rem 1.6rem;
+  transition: background-color 0.15s ease-in-out;
+  margin-bottom: 10px;
+}
+
+.loadmore-btn:hover {
+  background-color: rgb(23, 129, 194);
+}
+
+.loadmore-btn:focus {
+  outline: none;
+}
+
+#loadmore-div {
+  text-align: center;
+}

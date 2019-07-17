@@ -14,8 +14,12 @@ import com.google.appengine.api.search.GeoPoint;
 import com.google.codeu.data.Datastore;
 import com.google.codeu.data.Message;
 
+import java.util.logging.Logger;
+
 @WebServlet("/search")
 public class SearchServlet extends HttpServlet {
+  private static Logger LOGGER = Logger.getLogger(SearchServlet.class.getName());
+
   private Datastore datastore;
 
   @Override
@@ -43,9 +47,11 @@ public class SearchServlet extends HttpServlet {
     response.getOutputStream().println(json);
   }
 
+  // A super naive way to do range search
   private void filterByRadius(List<Message> messages, GeoPoint center, double lowerbound, double upperbound) {
     for (int i = messages.size() - 1; i >= 0; --i) {
       double curDistance = getDistance(messages.get(i).getLocation(), center);
+      //LOGGER.info(messages.get(i).getText() + " | distance = " + curDistance);
       if (curDistance < lowerbound || curDistance > upperbound) {
         messages.remove(i);
       }
@@ -53,21 +59,21 @@ public class SearchServlet extends HttpServlet {
   }
 
   // returns distance in meters
-  private double getDistance(GeoPoint a, GeoPoint b) {
-    double lat1 = a.getLatitude();
-    double lat2 = b.getLatitude();
-    double lon1 = a.getLongitude();
-    double lon2 = b.getLongitude();
-    if ((lat1 == lat2) && (lon1 == lon2)) {
-      return 0;
-    }
-    else {
-      double theta = lon1 - lon2;
-      double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
-      dist = Math.acos(dist);
-      dist = Math.toDegrees(dist);
-      dist = dist * 60 * 1.1515;
-      return dist;
-    }
+  private double getDistance(GeoPoint from, GeoPoint to) {
+    double lat1 = from.getLatitude();
+    double lat2 = to.getLatitude();
+    double lng1 = from.getLongitude();
+    double lng2 = to.getLongitude();
+
+    double earthRadius = 6371000; //meters
+    double dLat = Math.toRadians(lat2-lat1);
+    double dLng = Math.toRadians(lng2-lng1);
+    double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+               Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+               Math.sin(dLng/2) * Math.sin(dLng/2);
+    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    double dist = (double) (earthRadius * c);
+
+    return dist;
   }
 }
