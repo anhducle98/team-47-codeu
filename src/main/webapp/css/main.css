@@ -324,6 +324,7 @@ body.logged-in .create-post-btn.fixed.show {
 
 .post-translate--trigger i {
   margin-right: 0.2rem;
+  width: 1.2rem;
 }
 
 .post-translate--trigger:hover span {

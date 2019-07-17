@@ -1,3 +1,23 @@
+function toDegreesMinutesAndSeconds(coordinate) {
+  const absolute = Math.abs(coordinate);
+  const degrees = Math.floor(absolute);
+  const minutesNotTruncated = (absolute - degrees) * 60;
+  const minutes = Math.floor(minutesNotTruncated);
+  const seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+
+  return degrees + "°" + minutes + "'" + seconds + "''";
+}
+
+function convertLatLongToDMS(lat, lng) {
+  const latitude = toDegreesMinutesAndSeconds(lat);
+  const latitudeCardinal = lat >= 0 ? "N" : "S";
+
+  const longitude = toDegreesMinutesAndSeconds(lng);
+  const longitudeCardinal = lng >= 0 ? "E" : "W";
+
+  return latitude + " " + latitudeCardinal + ", " + longitude + " " + longitudeCardinal;
+}
+
 function requestTranslation(div) {
   div.style.visibility = "hidden";
   const post = div.parentElement.parentElement;
@@ -38,13 +58,22 @@ function fetchPublicFeed() {
             <span class="dot">·</span>
             <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
           </div>
-          <div class="post-content">
+          <div class="post-content">            
             <div class="post-content--text">${message.text}</div>
+            <div class="post-translate--trigger">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>
+                ${convertLatLongToDMS(
+                  message.location.latitude,
+                  message.location.longitude
+                )}
+              </span>
+            </div>
             <div class="post-translate--trigger" onclick="requestTranslation(this);">
               <i class="fas fa-globe-americas"></i>
               <span>Translate Post</span>
             </div>
-          </div>      
+          </div>
         </div>`;
       });
     });
