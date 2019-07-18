@@ -17,6 +17,7 @@
 // Get ?user=XYZ parameter value
 const urlParams = new URLSearchParams(window.location.search);
 const parameterUsername = urlParams.get("user");
+let marker;
 
 // URL must include ?user=XYZ parameter. If not, redirect to homepage.
 if (!parameterUsername) {
@@ -109,4 +110,50 @@ function handleUploadFile(e) {
     </div>`;
     document.getElementById("message-form").classList.add("file-uploaded");
   }
+}
+
+function postMessage() {
+  if (!marker) {
+    var labelLine = document.getElementById("lb-text");
+    labelLine.style.color = 'red';
+    labelLine.style.visibility = 'true';
+    return;
+  }
+  const data = new FormData();
+  var docForm = document.getElementById("message-form");
+
+  data.append('lat', marker.getPosition().lat().toString());
+  data.append('lng', marker.getPosition().lng().toString());
+
+  for (const pair of new FormData(docForm)) {
+      data.append(pair[0], pair[1]);
+  }
+
+  console.log(data);
+
+  const uploadUrl = docForm.action;
+  fetch(uploadUrl, {
+      method: "post",
+      body: data,
+  })
+  .then(function(res){
+    console.log(res);
+    window.location.replace(res.url);}
+  )
+  .catch(function(res){ console.log(res) })
+}
+
+function createMarker() {
+  map.addListener('click', (event) => {
+    let lat = event.latLng.lat();
+    let lng = event.latLng.lng();
+    if (marker) {
+      marker.setMap(null);
+    }
+    marker = new google.maps.Marker({
+      position: {lat: lat, lng: lng},
+      map: map,
+      animation: google.maps.Animation.BOUNCE
+    });
+  });
 }

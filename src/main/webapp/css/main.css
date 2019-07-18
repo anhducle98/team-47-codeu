@@ -151,7 +151,7 @@ body {
   margin-right: 0.4rem;
 }
 
-.post-content {
+.post-content, .lb-text{
   font-size: 1.5rem;
 }
 
