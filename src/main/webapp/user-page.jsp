@@ -46,7 +46,7 @@ blobstoreService.createUploadUrl("/messages"); %>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB93QPT7R9sVl24lY6JWEr6oYBfWFm-ke4&libraries=places"
          async defer></script>
 </head>
-<body onload="fetchLoginStatus(); buildUI(); createMap();">
+<body onload="fetchLoginStatus(); buildUI(); createMap(); createMarker()">
   <nav class="navbar">
     <div>
       <div class="navbar-item">
@@ -82,6 +82,9 @@ blobstoreService.createUploadUrl("/messages"); %>
       <div id="map" class="post-content"></div>
     </div>
     <div class="public-feed">
+      <div class="lb-text">
+        <label id="lb-text">Please choose a location to create a post</label>
+      </div>
       <div class="public-feed__header" style="display: block;">
         <h1 class="username"></h1>
         <div class="message-count">
