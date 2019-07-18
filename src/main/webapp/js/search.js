@@ -1,13 +1,15 @@
 const RADIUS_INCREASE_RATE = 1.5;
 const EARTH_CIRCUMFERENCE = 40075000; // should only consider radius <= EARTH_CIRCUMFERENCE / 2
 const RADIUS_LIMIT = 100000; // 100 km
-const INITIAL_RADIUS = 1000; // 1 kilometer
+const INITIAL_RADIUS = 250; // 250 meters
 
 let radius = 0; // increase exponentially by RADIUS_INCREASE_RATE
 
 let messageList = [];
 let markerList = [];
 let centerCircle = null;
+let centerMarker = null;
+let searchCenter = null;
 
 function adjustCircle(center, radius) {
   if (centerCircle == null) {
@@ -35,7 +37,7 @@ function getDistance(a, b) {
 function getMaxDistance(center, messageList) {
   let res = 0;
   for (let i = 0; i < messageList.length; ++i) {
-    res = Math.max(res, getDistance(map.getCenter(), toLatLng(messageList[i].location)));
+    res = Math.max(res, getDistance(center, toLatLng(messageList[i].location)));
   }
   return res;
 }
@@ -48,8 +50,8 @@ function fetchMessagesInRange(lowerbound, upperbound) {
   var params = {
     lowerbound: lowerbound,
     upperbound: upperbound,
-    latitude: map.getCenter().lat(),
-    longitude: map.getCenter().lng()
+    latitude: searchCenter.lat(),
+    longitude: searchCenter.lng()
   };
 
   var esc = encodeURIComponent;
@@ -62,7 +64,7 @@ function fetchMessagesInRange(lowerbound, upperbound) {
 }
 
 function updateSearchResults(newMessageList) {
-  const feed = document.getElementsByClassName("public-feed")[0];
+  const feed = document.getElementById("feed");
   newMessageList.forEach((message) => {
     latlng = toLatLng(message.location);
     markerList.push(new google.maps.Marker({
@@ -70,7 +72,7 @@ function updateSearchResults(newMessageList) {
       position: latlng
     }));
 
-    let distance = getDistance(latlng, map.getCenter()) / 1000.0;
+    let distance = getDistance(latlng, searchCenter) / 1000.0;
     feed.innerHTML += `<div class="post">
       <div class="post-header">
         <h2 class="post-uploader">${message.user}</h2>
@@ -78,10 +80,19 @@ function updateSearchResults(newMessageList) {
         <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
       </div>
       <div class="post-header">
-        <h2 class="post-location">Location: ${message.location.latitude} ${message.location.longitude} | Distance: ${distance.toFixed(2)} km</h2>
+        <h2 class="post-location">Distance: ${distance.toFixed(2)} km</h2>
       </div>
       <div class="post-content">            
         <div class="post-content--text">${message.text}</div>
+        <div class="post-translate--trigger">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>
+            ${convertLatLongToDMS(
+              message.location.latitude,
+              message.location.longitude
+            )}
+          </span>
+        </div>
         <div class="post-translate--trigger" onclick="requestTranslation(this);">
           <i class="fas fa-globe-americas"></i>
           <span>Translate Post</span>
@@ -91,7 +102,7 @@ function updateSearchResults(newMessageList) {
   });
   messageList = messageList.concat(newMessageList);
 
-  radius = getMaxDistance(map.getCenter(), messageList) * 1.1;
+  radius = getMaxDistance(searchCenter, messageList) * 1.1;
 
   document.getElementsByClassName("message-count")[0].innerHTML = `
     <h2>Search radius: </h2>
@@ -102,16 +113,19 @@ function updateSearchResults(newMessageList) {
     <h2>post${messageList.length > 1 ? "s" : ""}</h2>
   `;
 
-  adjustCircle(map.getCenter(), radius);
+  adjustCircle(searchCenter, radius);
 }
 
-function fetchMoreMessages() {
-  if (radius >= RADIUS_LIMIT) return;
-  let newRadius = Math.max(radius * RADIUS_INCREASE_RATE, 1000);
-  newRadius = Math.min(newRadius, RADIUS_LIMIT);
+function fetchMoreMessages(from, to) {
+  if (from === undefined) {
+    from = radius;
+    to = radius * RADIUS_INCREASE_RATE;
+  }
+  to = Math.min(to, RADIUS_LIMIT);
+  if (from > to) return;
 
-  fetchMessagesInRange(radius, newRadius).then((newMessageList) => {
-    radius = newRadius;
+  fetchMessagesInRange(from, to).then((newMessageList) => {
+    radius = to;
 
     if (newMessageList.length == 0) {
       fetchMoreMessages();
@@ -122,8 +136,52 @@ function fetchMoreMessages() {
   });
 }
 
-function initSearch() {
-  currentLocationMarker.setMap(null);
-  map.setOptions({draggable: false});
-  tryCurrentLocation(fetchMoreMessages);
+function firstSearch() {
+  searchCenter = currentLocation;
+  fetchMoreMessages(0, INITIAL_RADIUS);
 }
+
+function resetSearch() {
+  radius = 0;
+  searchCenter = null;
+  document.getElementById("feed").innerHTML = "";
+  for (let marker of markerList) {
+    marker.setMap(null);
+  }
+  markerList = [];
+  messageList = [];
+}
+
+function initSearch() {
+  centerMarker = new google.maps.Marker({
+    map: null,
+    position: map.getCenter(),
+    icon: {
+      url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+      size: new google.maps.Size(20, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(0, 32)
+    }
+  });
+  map.addListener('dragend', function() {
+    if (google.maps.geometry.spherical.computeDistanceBetween(map.getCenter(), searchCenter) >= radius) {
+      let previousRadius = radius;
+      resetSearch();
+      searchCenter = map.getCenter();
+      fetchMoreMessages(0, previousRadius);
+    }
+    centerMarker.setMap(null);
+  });
+  map.addListener('drag', function() {
+    centerMarker.setPosition(map.getCenter());
+    centerMarker.setMap(map);
+  });
+
+  resetSearch();
+  tryCurrentLocation(firstSearch);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  createMap();
+  initSearch();
+});
