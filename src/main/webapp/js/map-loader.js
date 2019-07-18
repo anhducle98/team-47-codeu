@@ -72,10 +72,10 @@ function createMap (){
 
   initCurrentLocation();
 
-  map.addListener('click', (event) => {
-    createMarkerForEdit(event.latLng.lat(), event.latLng.lng());
-  });
-  fetchMarkers();
+  // map.addListener('click', (event) => {
+  //   createMarkerForEdit(event.latLng.lat(), event.latLng.lng());
+  // });
+  // fetchMarkers();
   initAutocomplete();
 }
 
