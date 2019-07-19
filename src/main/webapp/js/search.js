@@ -65,12 +65,26 @@ function fetchMessagesInRange(lowerbound, upperbound) {
 
 function updateSearchResults(newMessageList) {
   const feed = document.getElementById("feed");
+  let openingInfoWindow;
   newMessageList.forEach((message) => {
     latlng = toLatLng(message.location);
-    markerList.push(new google.maps.Marker({
+    let thisMarker = new google.maps.Marker({
       map: map,
       position: latlng
-    }));
+    });
+    markerList.push(thisMarker);
+
+    console.log(message)
+    let infowindow = new google.maps.InfoWindow({
+      content: `<div>
+        ${message.text}
+      </div>`
+    });
+    thisMarker.addListener("click", () => {
+      if (openingInfoWindow) openingInfoWindow.close()
+      infowindow.open(map, thisMarker);
+      openingInfoWindow = infowindow;
+    });
 
     let distance = getDistance(latlng, searchCenter) / 1000.0;
     feed.innerHTML += `<div class="post">
