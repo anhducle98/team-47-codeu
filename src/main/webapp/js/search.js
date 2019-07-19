@@ -10,6 +10,7 @@ let markerList = [];
 let centerCircle = null;
 let centerMarker = null;
 let searchCenter = null;
+let openingInfoWindow = null;
 
 function adjustCircle(center, radius) {
   if (centerCircle == null) {
@@ -65,7 +66,6 @@ function fetchMessagesInRange(lowerbound, upperbound) {
 
 function updateSearchResults(newMessageList) {
   const feed = document.getElementById("feed");
-  let openingInfoWindow;
   newMessageList.forEach((message) => {
     latlng = toLatLng(message.location);
     let thisMarker = new google.maps.Marker({
@@ -74,20 +74,24 @@ function updateSearchResults(newMessageList) {
     });
     markerList.push(thisMarker);
 
-    console.log(message)
     let infowindow = new google.maps.InfoWindow({
-      content: `<div>
+      content: `
+      <a href="#${message.id}">View post</a>
+      <div class="post-content post-content--text">
         ${message.text}
-      </div>`
+      </div>
+      `
     });
     thisMarker.addListener("click", () => {
-      if (openingInfoWindow) openingInfoWindow.close()
+      if (openingInfoWindow) {
+        openingInfoWindow.close();
+      }
       infowindow.open(map, thisMarker);
       openingInfoWindow = infowindow;
     });
 
     let distance = getDistance(latlng, searchCenter) / 1000.0;
-    feed.innerHTML += `<div class="post">
+    feed.innerHTML += `<div class="post" id="${message.id}">
       <div class="post-header">
         <h2 class="post-uploader">${message.user}</h2>
         <span class="dot">·</span>
@@ -175,6 +179,11 @@ function initSearch() {
       size: new google.maps.Size(20, 32),
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(0, 32)
+    }
+  });
+  map.addListener('click', () => {
+    if (openingInfoWindow) {
+      openingInfoWindow.close();
     }
   });
   map.addListener('dragend', function() {
