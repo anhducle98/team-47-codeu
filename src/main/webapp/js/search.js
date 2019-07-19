@@ -75,6 +75,7 @@ function updateSearchResults(newMessageList) {
     markerList.push(thisMarker);
 
     let infowindow = new google.maps.InfoWindow({
+      maxWidth: 200,
       content: `
       <a href="#${message.id}">View post</a>
       <div class="post-content post-content--text">
