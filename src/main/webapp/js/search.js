@@ -2,6 +2,8 @@ const RADIUS_INCREASE_RATE = 1.5;
 const EARTH_CIRCUMFERENCE = 40075000; // should only consider radius <= EARTH_CIRCUMFERENCE / 2
 const RADIUS_LIMIT = 100000; // 100 km
 const INITIAL_RADIUS = 250; // 250 meters
+const STATUS_EMPTY_LIST = "Can't find any nearby posts for now. Please check back later, or create your own!";
+const STATUS_LOAD_ERROR = "Unfortunately something went wrong, please try again later";
 
 let radius = 0; // increase exponentially by RADIUS_INCREASE_RATE
 
@@ -103,6 +105,7 @@ function updateSearchResults(newMessageList) {
   messageList = messageList.concat(newMessageList);
 
   radius = getMaxDistance(searchCenter, messageList) * 1.1;
+  if (messageList.length === 0) radius = RADIUS_LIMIT;
 
   document.getElementsByClassName("message-count")[0].innerHTML = `
     <h2>Search radius: </h2>
@@ -114,25 +117,39 @@ function updateSearchResults(newMessageList) {
   `;
 
   adjustCircle(searchCenter, radius);
+
+  if (messageList.length === 0) {
+    document.getElementById("load-status").innerHTML = STATUS_EMPTY_LIST;
+  } else {
+    document.getElementById("load-status").innerHTML = "";
+  }
 }
 
-function fetchMoreMessages(from, to) {
+function fetchMoreMessages(from, to, nopopup) {
   if (from === undefined) {
     from = radius;
     to = radius * RADIUS_INCREASE_RATE;
   }
   to = Math.min(to, RADIUS_LIMIT);
-  if (from > to) return;
+  if (from >= to) {
+    updateSearchResults([]);
+    if (nopopup === undefined) {
+      document.getElementById("loadmore-popup").classList.toggle("show");
+    }
+    return;
+  }
 
   fetchMessagesInRange(from, to).then((newMessageList) => {
     radius = to;
 
     if (newMessageList.length == 0) {
-      fetchMoreMessages();
+      fetchMoreMessages(radius, radius * RADIUS_INCREASE_RATE, nopopup);
       return;
     }
 
     updateSearchResults(newMessageList);
+  }).catch((error) => {
+    document.getElementById("load-status").innerHTML = STATUS_LOAD_ERROR;
   });
 }
 
@@ -168,7 +185,7 @@ function initSearch() {
       let previousRadius = radius;
       resetSearch();
       searchCenter = map.getCenter();
-      fetchMoreMessages(0, previousRadius);
+      fetchMoreMessages(0, previousRadius, true);
     }
     centerMarker.setMap(null);
   });
