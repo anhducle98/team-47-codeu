@@ -123,8 +123,11 @@ public class Message {
   }
 
   private void appendImageLabels() {
+    // Temporarily disable this feature
+    /*
     if (imageLabels != null && imageLabels != "") {
       text += "<p>Suggested tags: " + imageLabels + "</p>";
     }
+    */
   }
 }
