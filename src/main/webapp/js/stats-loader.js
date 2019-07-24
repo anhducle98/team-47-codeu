@@ -51,7 +51,7 @@ async function fetchStats() {
     <div class="post-header">
       <h2 class="post-uploader">Top contributors</h2>
     </div>
-    <div class="post-content">
+    <div class="post-content" style="display: flex;">
       <div class="ranking">
         ${table}
       </div>
