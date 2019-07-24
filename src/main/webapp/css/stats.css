@@ -1,5 +1,4 @@
 .ranking {
-  max-width: 36rem;
   margin-left: auto;
   margin-right: auto;
 }
@@ -49,6 +48,7 @@
   border-radius: 1.6rem;
   color: #1abcc9;
   font-weight: bold;
+  margin-left: 0.8rem;
   padding: 0.8rem 1.6rem;
 }
 
