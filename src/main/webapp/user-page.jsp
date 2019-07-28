@@ -77,13 +77,13 @@ blobstoreService.createUploadUrl("/messages"); %>
     <div class="navbar__login"></div>
   </nav>
   <section class="content user-page">
-    <div class="post">
+    <div class="post hidden" id="map-block">
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
       <div id="map" class="post-content"></div>
     </div>
     <div class="public-feed">
       <div class="lb-text">
-        <label id="lb-text">Please choose a location to create a post</label>
+        <label id="lb-text" class="hidden">Please choose a location to create a post</label>
       </div>
       <div class="public-feed__header" style="display: block;">
         <h1 class="username"></h1>
