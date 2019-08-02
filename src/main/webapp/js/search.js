@@ -162,15 +162,15 @@ function fetchMoreMessages(from, to, nopopup) {
   fetchMessagesInRange(from, to).then((newMessageList) => {
     radius = to;
 
+    document.getElementById("loadmore-btn").innerHTML = "Load More";
+    document.getElementById("loadmore-btn").disabled = false;
+
     if (newMessageList.length == 0) {
       fetchMoreMessages(radius, radius * RADIUS_INCREASE_RATE, nopopup);
       return;
     }
 
     updateSearchResults(newMessageList);
-
-    document.getElementById("loadmore-btn").innerHTML = "Load More";
-    document.getElementById("loadmore-btn").disabled = false;
   }).catch((error) => {
     document.getElementById("load-status").innerHTML = STATUS_LOAD_ERROR;
 
