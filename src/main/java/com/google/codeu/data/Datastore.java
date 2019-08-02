@@ -16,6 +16,8 @@
 
 package com.google.codeu.data;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.blobstore.*;
 import com.google.appengine.api.images.*;
@@ -26,6 +28,8 @@ import com.google.cloud.vision.v1.EntityAnnotation;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import java.util.logging.Logger;
 
 import java.util.*;
 
@@ -44,6 +48,8 @@ public class Datastore {
 
   private DatastoreService datastore;
 
+  private static Logger logger = Logger.getLogger(Datastore.class.getName());
+
   public Datastore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
@@ -59,6 +65,16 @@ public class Datastore {
     messageEntity.setProperty("location_lat", message.getLocation().getLatitude());
     messageEntity.setProperty("location_lng", message.getLocation().getLongitude());
     datastore.put(messageEntity);
+  }
+
+  public void deleteMessage(String user, String postId) throws EntityNotFoundException {
+    Key key = KeyFactory.createKey("Message", postId);
+    Entity messageEntity = datastore.get(key);
+    String messageUser = (String) messageEntity.getProperty("user");
+    if (!messageUser.equals(user)) {
+      return;
+    }
+    datastore.delete(key);
   }
 
   public Set<String> getUsers() {
