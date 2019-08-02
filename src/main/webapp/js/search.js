@@ -157,7 +157,8 @@ function fetchMoreMessages(from, to, nopopup) {
     }
     return;
   }
-
+  document.getElementById("loadmore-btn").innerHTML = "<i class=\"fas fa-spinner fa-spin\"></i> Load More";
+  document.getElementById("loadmore-btn").disabled = true;
   fetchMessagesInRange(from, to).then((newMessageList) => {
     radius = to;
 
@@ -167,8 +168,14 @@ function fetchMoreMessages(from, to, nopopup) {
     }
 
     updateSearchResults(newMessageList);
+
+    document.getElementById("loadmore-btn").innerHTML = "Load More";
+    document.getElementById("loadmore-btn").disabled = false;
   }).catch((error) => {
     document.getElementById("load-status").innerHTML = STATUS_LOAD_ERROR;
+
+    document.getElementById("loadmore-btn").innerHTML = "Load More";
+    document.getElementById("loadmore-btn").disabled = false;
   });
 }
 
