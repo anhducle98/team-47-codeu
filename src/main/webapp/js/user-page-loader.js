@@ -48,6 +48,19 @@ function showMessageFormIfViewingSelf() {
     });
 }
 
+function deleteMessage(messageId) {
+  console.log(messageId);
+  const url = "/delete-messages?messageId=" + messageId;
+  fetch(url, {
+      method: "post",
+  }).then((res) => {
+    console.log(res);
+    window.location.replace(res.url);
+  }).catch(() => {
+    console.log("error")
+  })
+}
+
 /** Fetches messages and add them to the page. */
 function fetchMessages() {
   const url = "/messages?user=" + parameterUsername;
@@ -61,6 +74,7 @@ function fetchMessages() {
             <h2 class="post-uploader">${message.user}</h2>
             <span class="dot">·</span>
             <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
+            <button id="delete-btn" type="button" onclick="deleteMessage('${message.id}');">Delete</button>
           </div>
           <div class="post-content">            
             <div class="post-content--text">${message.text}</div>
