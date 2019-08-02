@@ -133,6 +133,7 @@ function postMessage() {
 
   console.log(data);
 
+  document.getElementById("post-btn").disabled = true;
   const uploadUrl = docForm.action;
   fetch(uploadUrl, {
       method: "post",
