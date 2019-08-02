@@ -2,7 +2,7 @@ const RADIUS_INCREASE_RATE = 1.5;
 const EARTH_CIRCUMFERENCE = 40075000; // should only consider radius <= EARTH_CIRCUMFERENCE / 2
 const RADIUS_LIMIT = 100000; // 100 km
 const INITIAL_RADIUS = 250; // 250 meters
-const STATUS_EMPTY_LIST = "Can't find any nearby posts for now. Please check back later, or create your own!";
+const STATUS_EMPTY_LIST = "Can't find any nearby posts for now. Please move the map around to search from a different location, or create your own posts!";
 const STATUS_LOAD_ERROR = "Unfortunately something went wrong, please try again later";
 
 let radius = 0; // increase exponentially by RADIUS_INCREASE_RATE
