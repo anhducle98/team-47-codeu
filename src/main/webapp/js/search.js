@@ -157,7 +157,7 @@ function fetchMoreMessages(from, to, nopopup) {
     }
     return;
   }
-  document.getElementById("loadmore-btn").innerHTML = "<i class=\"fas fa-spinner fa-spin\"></i> Load More";
+  document.getElementById("loadmore-btn").innerHTML = "<i class=\"fas fa-spinner fa-spin\"></i> Loading";
   document.getElementById("loadmore-btn").disabled = true;
   fetchMessagesInRange(from, to).then((newMessageList) => {
     radius = to;
