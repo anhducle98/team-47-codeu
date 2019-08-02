@@ -179,7 +179,6 @@ function firstSearch() {
 
 function resetSearch() {
   radius = 0;
-  searchCenter = null;
   document.getElementById("feed").innerHTML = "";
   for (let marker of markerList) {
     marker.setMap(null);
@@ -189,6 +188,7 @@ function resetSearch() {
 }
 
 function initSearch() {
+  searchCenter = map.getCenter();
   centerMarker = new google.maps.Marker({
     map: null,
     position: map.getCenter(),
