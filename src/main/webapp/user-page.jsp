@@ -114,7 +114,7 @@ blobstoreService.createUploadUrl("/messages"); %>
               onchange="handleUploadFile(event);"
             />
           </label>
-          <button class="post-btn" type="button" onclick="postMessage();">Post</button>
+          <button id="post-btn" class="post-btn" type="button" onclick="postMessage();">Post</button>
         </div>
       </form>
     </div>
