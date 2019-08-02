@@ -133,6 +133,7 @@ function postMessage() {
 
   console.log(data);
 
+  document.getElementById("post-btn").innerHTML = "<i class=\"fas fa-spinner fa-spin\"></i> Posting";
   document.getElementById("post-btn").disabled = true;
   const uploadUrl = docForm.action;
   fetch(uploadUrl, {
