@@ -157,12 +157,12 @@ function fetchMoreMessages(from, to, nopopup) {
     }
     return;
   }
-  document.getElementById("loadmore-btn").innerHTML = "<i class=\"fas fa-spinner fa-spin\"></i> Loading";
+  document.getElementById("loadmore-text").innerHTML = "<i class=\"fas fa-spinner fa-spin\"></i> Loading";
   document.getElementById("loadmore-btn").disabled = true;
   fetchMessagesInRange(from, to).then((newMessageList) => {
     radius = to;
 
-    document.getElementById("loadmore-btn").innerHTML = "Load More";
+    document.getElementById("loadmore-text").innerHTML = "Load More";
     document.getElementById("loadmore-btn").disabled = false;
 
     if (newMessageList.length == 0) {
@@ -174,7 +174,7 @@ function fetchMoreMessages(from, to, nopopup) {
   }).catch((error) => {
     document.getElementById("load-status").innerHTML = STATUS_LOAD_ERROR;
 
-    document.getElementById("loadmore-btn").innerHTML = "Load More";
+    document.getElementById("loadmore-text").innerHTML = "Load More";
     document.getElementById("loadmore-btn").disabled = false;
   });
 }
