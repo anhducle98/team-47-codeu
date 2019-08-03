@@ -77,7 +77,7 @@ function fetchMessages() {
               <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
             </div>
             <div style="margin-left: auto">
-              <button id="delete-btn" class="del-btn" type="button" onclick="deleteMessage('${message.id}');">Delete</button>
+              <button id="delete-btn" class="del-btn" type="button" onclick="deleteMessage('${message.id}');"><i class="fas fa-trash-alt"></i></button>
             </div>
           </div>
           <div class="post-content">            
