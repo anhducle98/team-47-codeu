@@ -122,6 +122,27 @@
   z-index: 100;
 }
 
+.del-btn {
+  background-color: red;
+  border: none;
+  border-radius: 1000rem;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+  padding: 0.8rem 1.6rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.del-btn:hover {
+  background-color: red;
+}
+
+.del-btn:focus {
+  outline: none;
+}
+
 .post-btn {
   background-color: rgb(29, 161, 242);
   border: none;

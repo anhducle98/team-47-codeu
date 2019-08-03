@@ -71,10 +71,14 @@ function fetchMessages() {
       messageList.forEach((message) => {
         feed.innerHTML += `<div class="post">
           <div class="post-header">
-            <h2 class="post-uploader">${message.user}</h2>
-            <span class="dot">·</span>
-            <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
-            <button id="delete-btn" class="post-btn" type="button" onclick="deleteMessage('${message.id}');"><i class="fas fa-trash-alt"></i></button>
+            <div>
+              <h2 class="post-uploader">${message.user}</h2>
+              <span class="dot">·</span>
+              <h3 class="post-date">${moment(message.timestamp).toNow(true)}</h3>
+            </div>
+            <div style="margin-left: auto">
+              <button id="delete-btn" class="del-btn" type="button" onclick="deleteMessage('${message.id}');">Delete</button>
+            </div>
           </div>
           <div class="post-content">            
             <div class="post-content--text">${message.text}</div>
